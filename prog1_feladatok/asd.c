@@ -8,8 +8,8 @@ int inf()
 
 int inf2()
 {
-	while (1)
-		sleep(1);
+	while (1);
+		//sleep(1);
 }
 
 int inf3()
