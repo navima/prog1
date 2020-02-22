@@ -19,3 +19,5 @@ int inf3()
 		while (1);
 	}
 }
+
+//asdasdasdasdas
