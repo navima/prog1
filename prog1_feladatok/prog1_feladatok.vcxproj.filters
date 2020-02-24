@@ -35,5 +35,11 @@
     <ClCompile Include="labda.c">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="csere.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="szohossz.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
 </Project>
