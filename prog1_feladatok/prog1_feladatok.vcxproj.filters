@@ -32,5 +32,8 @@
     <ClCompile Include="pageRank.c">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="labda.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
 </Project>
