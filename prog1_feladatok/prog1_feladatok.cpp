@@ -4,5 +4,5 @@
 
 int main()
 {
-	labda();
+	labda_ifless();
 }

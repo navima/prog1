@@ -1,54 +1,104 @@
 #include <math.h>
 
-int labda()
+int print(int x, int y)
 {
-	//location of ball
-	int x = 1;
-	int y = 1;
-
-	//velocity of ball
-	int vx = 1;
-	int vy = 1;
-
-	while (1)
-	{
-		//***Update bounds here***
-		int bounds[4] = getBounds(); //Order: {xmin, ymin, xmax, ymax}
-
-		//minimum bounds
-		int min_x = bounds[0];
-		int min_y = bounds[1];
-
-		//maximum bounds
-		int max_x = bounds[2];
-		int max_y = bounds[3];
-
-
-		//bounds check
-		vx *= trunc((max_x - (x + 0.5)) / fabs((max_x - (x + 0.5))));
-		vy *= trunc((max_y - (y + 0.5)) / fabs((max_y - (y + 0.5))));
-
-		vx *= trunc((min_x + (x - 0.5)) / fabs((min_x + (x - 0.5))));
-		vy *= trunc((min_y + (y - 0.5)) / fabs((min_y + (y - 0.5))));
-
-		//applying velocity
-		x += vx;
-		y += vy;
-
-		//***Print here***
-		print(x, y);
-	}
-
 	return 0;
 }
 
-int print(x, y)
+int getBounds(int* bounds) // {xmin ymin xmax ymax}
 {
-	//Print code
+	bounds[0] = 0;
+	bounds[1] = 0;
+	bounds[2] = 15;
+	bounds[3] = 8;
+	return 0;
 }
 
-int* getBounds() //Order: {xmin, ymin, xmax, ymax}
+int labda_if()
 {
-	int bounds[4] = { 0,0,15,10 };
-	return bounds;
+	int x = 1;
+	int y = 1;
+
+	int vx = 1;
+	int vy = 1;
+
+	int xmin = 0;
+	int ymin = 0;
+
+	int xmax = 10;
+	int ymax = 5;
+
+	while (1)
+	{
+		//get bounds
+		int bounds[4];
+		getBounds(bounds);
+
+		xmin = bounds[0];
+		ymin = bounds[1];
+		xmax = bounds[2];
+		ymax = bounds[3];
+
+
+		//bounds check
+		if ((x+1) > xmax)
+			vx *= -1;
+		if ((y+1) > ymax)
+			vy *= -1;
+		if ((x-1) < xmin)
+			vx *= -1;
+		if ((y-1) < ymin)
+			vy *= -1;
+
+		//apply velocity
+		x += vx;
+		y += vy;
+
+		//print
+		print(x, y);
+	}
+}
+
+int labda_ifless()
+{
+	int x = 1;
+	int y = 1;
+
+	int vx = 1;
+	int vy = 1;
+
+	int xmin = 0;
+	int ymin = 0;
+
+	int xmax = 10;
+	int ymax = 5;
+
+	while (1)
+	{
+		//get bounds
+		int bounds[4];
+		getBounds(bounds);
+
+		xmin = bounds[0];
+		ymin = bounds[1];
+		xmax = bounds[2];
+		ymax = bounds[3];
+
+		//bounds check
+
+		//max
+		vx *= (xmax - (x + 0.5)) / (fabs(xmax - (x + 0.5)));
+		vy *= (ymax - (y + 0.5)) / (fabs(ymax - (y + 0.5)));
+
+		//min
+		vx *= (xmin + (x - 0.5)) / (fabs(xmin + (x - 0.5)));
+		vy *= (ymin + (y - 0.5)) / (fabs(ymin + (y - 0.5)));
+
+		//apply velocity
+		x += vx;
+		y += vy;
+
+		//print
+		print(x, y);
+	}
 }
