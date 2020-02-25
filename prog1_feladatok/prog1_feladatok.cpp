@@ -1,10 +1,10 @@
 #include "asd.c"
-#include "pageRank.c"
-#include "labda.c"
-#include "csere.c"
-#include "szohossz.c"
+//#include "pageRank.c"
+//#include "labda.c"
+//#include "csere.c"
+//#include "szohossz.c"
 
 int main()
 {
-	szohossz();
+	inf3();
 }
