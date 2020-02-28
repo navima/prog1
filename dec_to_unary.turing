@@ -1,0 +1,52 @@
+#https://turingmachine.io/
+input: '12'
+blank: ' '
+start state: GoRight
+table:
+  # scan to the rightmost digit
+  GoRight:
+    [0,1,2,3,4,5,6,7,8,9]: R
+    ' '  : {L: decrement}
+    
+  decrement:
+    ' ': {R: done}
+    0: {L: carry}
+    1: {write: 0, R: GoToUnStart}
+    2: {write: 1, R: GoToUnStart}
+    3: {write: 2, R: GoToUnStart}
+    4: {write: 3, R: GoToUnStart}
+    5: {write: 4, R: GoToUnStart}
+    6: {write: 5, R: GoToUnStart}
+    7: {write: 6, R: GoToUnStart}
+    8: {write: 7, R: GoToUnStart}
+    9: {write: 8, R: GoToUnStart}
+    
+  GoToUnStart:
+    [0,1,2,3,4,5,6,7,8,9]: R
+    ' '  : {R: GoToUnEnd}
+    
+  GoToUnEnd:
+    1: R
+    ' ': {write: 1, L: GoToDecStart}
+    
+  GoToDecStart:
+    1: L
+    ' ': {L: decrement}
+    
+  carry:
+    0: {L: carry}
+    ' ': {R: done}
+    1: {write: 0, R: right9}
+    2: {write: 1, R: right9}
+    3: {write: 2, R: right9}
+    4: {write: 3, R: right9}
+    5: {write: 4, R: right9}
+    6: {write: 5, R: right9}
+    7: {write: 6, R: right9}
+    8: {write: 7, R: right9}
+    9: {write: 8, R: right9}
+    
+  right9:
+    0: {write: 9, R: right9}
+    ' ': {L: decrement}
+  done:
