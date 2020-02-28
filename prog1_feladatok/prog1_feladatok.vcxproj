@@ -160,6 +160,8 @@
   <ItemGroup>
     <ClCompile Include="asd.c" />
     <ClCompile Include="csere.c" />
+    <ClCompile Include="forras.c" />
+    <ClCompile Include="hivatkozasi.c" />
     <ClCompile Include="labda.c" />
     <ClCompile Include="pageRank.c" />
     <ClCompile Include="pch.cpp">

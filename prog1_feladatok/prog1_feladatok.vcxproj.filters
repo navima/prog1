@@ -41,5 +41,11 @@
     <ClCompile Include="szohossz.c">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="hivatkozasi.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="forras.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
 </Project>
