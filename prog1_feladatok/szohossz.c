@@ -1,4 +1,6 @@
-int szohossz()
+#include "stdio.h"
+
+int szohossz(void)
 {
 	int good_timer_count = 2;
 	int hossz = 0;
@@ -19,8 +21,8 @@ int szohossz()
 		counter++;
 	};
 
-	printf(hossz);
-	printf(counter);
+	printf("%d", hossz);
+	printf("%d", counter);
 
 	return 0;
 }
