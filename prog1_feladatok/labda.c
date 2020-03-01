@@ -64,8 +64,8 @@ int labda_ifless()
 	int x = 1;
 	int y = 1;
 
-	int vx = 1;
-	int vy = 1;
+	float vx = 1;
+	float vy = 1;
 
 	int xmin = 0;
 	int ymin = 0;
@@ -87,16 +87,16 @@ int labda_ifless()
 		//bounds check
 
 		//max
-		vx *= (xmax - (x + 0.5)) / (fabs(xmax - (x + 0.5)));
-		vy *= (ymax - (y + 0.5)) / (fabs(ymax - (y + 0.5)));
+		vx *= (float) ((xmax - (x + 0.5)) / (fabs(xmax - (x + 0.5))));
+		vy *= (float) ((ymax - (y + 0.5)) / (fabs(ymax - (y + 0.5))));
 
 		//min
-		vx *= (xmin + (x - 0.5)) / (fabs(xmin + (x - 0.5)));
-		vy *= (ymin + (y - 0.5)) / (fabs(ymin + (y - 0.5)));
+		vx *= (float) ((xmin + (x - 0.5)) / (fabs(xmin + (x - 0.5))));
+		vy *= (float) ((ymin + (y - 0.5)) / (fabs(ymin + (y - 0.5))));
 
 		//apply velocity
-		x += vx;
-		y += vy;
+		x += (int) round(vx);
+		y += (int) round(vy);
 
 		//print
 		print(x, y);

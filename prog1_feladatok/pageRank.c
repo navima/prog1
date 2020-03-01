@@ -37,7 +37,7 @@ int pageRank()
 		float deltaSum = 0;
 		for (int i = 0; i < 4; i++)
 		{
-			deltaSum += fabs(pages[i]-pagesDef[i]);
+			deltaSum += (float) (fabs(pages[i]-pagesDef[i]));
 			pagesDef[i] = pages[i];
 		}
 		printf("%i: %f %f %f %f\n",it,pagesDef[0], pagesDef[1], pagesDef[2], pagesDef[3]);
