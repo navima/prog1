@@ -1,8 +1,8 @@
-Imports System.Console
+﻿Imports System.Console
 Imports System.Text.RegularExpressions
 
-Module ChomskyLexer
-	Sub Main(args As String())
+Module MLexer
+	Sub ChomskyLexer()
 		Do
 			Dim be As String = ReadLine()
 			Dim pattern As String = "[0-9]*(\.[0-9]+)?"
