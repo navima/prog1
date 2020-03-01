@@ -32,6 +32,19 @@ int fa_insert(fa* target, char* toInsert,int length)
 	return 0;
 }
 
+int preorder(fa* target)
+{
+	//do stuff
+	return target->left, target->right;
+}
+
+int postorder(fa* target)
+{
+	target->left, target->right;
+	//do stuff
+	return 0;
+}
+
 int lzw()
 {
 	fa myFa = {0, 0, -1};
