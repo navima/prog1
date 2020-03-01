@@ -163,14 +163,16 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClInclude Include="fa.hpp" />
+    <ClInclude Include="faBin.hpp" />
     <ClInclude Include="pch.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="asd.c" />
     <ClCompile Include="csere.c" />
     <ClCompile Include="forras.c" />
-    <ClCompile Include="hivatkozasi.c" />
     <ClCompile Include="labda.c" />
+    <ClCompile Include="lzw.c" />
     <ClCompile Include="pageRank.c" />
     <ClCompile Include="pch.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Create</PrecompiledHeader>

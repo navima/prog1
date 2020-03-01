@@ -18,6 +18,12 @@
     <ClInclude Include="pch.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="fa.hpp">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="faBin.hpp">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="pch.cpp">
@@ -41,10 +47,10 @@
     <ClCompile Include="szohossz.c">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="hivatkozasi.c">
+    <ClCompile Include="forras.c">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="forras.c">
+    <ClCompile Include="lzw.c">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>

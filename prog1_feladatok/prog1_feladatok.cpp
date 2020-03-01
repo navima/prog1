@@ -1,10 +1,7 @@
-#include "asd.c"
-//#include "pageRank.c"
-//#include "labda.c"
-//#include "csere.c"
-//#include "szohossz.c"
+#include "lzw.c"
+#include "faLzw.hpp"
 
 int main()
 {
-	inf3();
+	lzw();
 }
