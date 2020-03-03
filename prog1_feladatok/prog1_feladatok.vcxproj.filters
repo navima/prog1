@@ -21,7 +21,10 @@
     <ClInclude Include="fa.hpp">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="faBin.hpp">
+    <ClInclude Include="faLzw.hpp">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="faLzw_tag.hpp">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
@@ -51,6 +54,12 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="lzw.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="haromszog.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="exor.c">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>

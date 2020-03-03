@@ -66,7 +66,7 @@ int xor_crack_1byte(char* source, size_t size, char* destination)
 int xor_test()
 {
 
-	char plaintext[] = "nvm ";
+	char plaintext[] = "Why would you want to program? Our civilization runs on software. Withoutunderstanding software you are reduced to believing in “magic” and will belocked out of many of the most interesting, profitable, and socially useful technicalfields of work. When I talk about programming, I think of the whole spectrum ofcomputer programs from personal computer applications with GUIs (graphicaluser interfaces), through engineering calculations and embedded systems controlapplications (such as digital cameras, cars, and cell phones), to text manipulationapplications as found in many humanities and business applications. Like mathematics,programming — when";
 	size_t size = strlen(plaintext);
 	_strlwr(plaintext);
 
@@ -80,7 +80,7 @@ int xor_test()
 	decodetext[680] = 0;
 	cracktext[680] = 0;
 
-	char key[] = "laci";
+	char key[] = "á";
 	size_t sizeKey = strlen(key);
 
 	xor_encrypt(plaintext, size, ciphertext, key, sizeKey);

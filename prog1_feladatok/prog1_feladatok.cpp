@@ -1,7 +1,7 @@
-#include "lzw.c"
-#include "faLzw.hpp"
+//#include "haromszog.c"
+#include "exor.c"
 
 int main()
 {
-	lzw();
+	xor_test();
 }

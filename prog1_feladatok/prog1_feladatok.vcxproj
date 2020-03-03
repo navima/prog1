@@ -164,13 +164,16 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClInclude Include="fa.hpp" />
-    <ClInclude Include="faBin.hpp" />
+    <ClInclude Include="faLzw.hpp" />
+    <ClInclude Include="faLzw_tag.hpp" />
     <ClInclude Include="pch.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="asd.c" />
     <ClCompile Include="csere.c" />
+    <ClCompile Include="exor.c" />
     <ClCompile Include="forras.c" />
+    <ClCompile Include="haromszog.c" />
     <ClCompile Include="labda.c" />
     <ClCompile Include="lzw.c" />
     <ClCompile Include="pageRank.c" />
