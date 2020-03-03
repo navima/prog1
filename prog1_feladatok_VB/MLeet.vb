@@ -41,8 +41,13 @@
 		}
 	Dim random As New Random
 
-	Sub ChomskyLeet()
+	Sub ChomskyLeetLoop()
+		Do
+			Console.WriteLine(ChomskyLeet(Console.ReadLine()))
+		Loop
+	End Sub
 
+	Function ChomskyLeet(ByRef be As String) As String
 		Console.OutputEncoding = Text.Encoding.Unicode
 
 		''Test Unicode characters in console
@@ -50,15 +55,12 @@
 		'	WriteLine(kar)
 		'Next
 
-		Do
-			Dim be = Console.ReadLine().ToUpper
-			Dim ki = ""
+		Dim ki = ""
 
-			For Each kar As Char In be
-				ki += If(subs.ContainsKey(kar), subs(kar)(random.Next(0, subs(kar).Count)), kar)
-			Next
+		For Each kar As Char In be.ToUpper()
+			ki += If(subs.ContainsKey(kar), subs(kar)(random.Next(0, subs(kar).Count)), kar)
+		Next
 
-			Console.WriteLine(ki)
-		Loop
-	End Sub
+		Return ki
+	End Function
 End Module

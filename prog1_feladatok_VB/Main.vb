@@ -5,6 +5,6 @@ Imports prog1_feladatok_VB.MLeet
 
 Module Main
 	Sub Main(args As String())
-		ChomskyLeet()
+		ChomskyLeetLoop()
 	End Sub
 End Module
