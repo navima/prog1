@@ -35,12 +35,19 @@ int fa_insert(fa* target, char* toInsert,int length)
 int preorder(fa* target)
 {
 	//do stuff
-	return target->left, target->right;
+	if (target->left)
+		preorder(target->left);
+	if(target->right)
+		preorder(target->right);
+	return 0;
 }
 
 int postorder(fa* target)
 {
-	target->left, target->right;
+	if (target->left)
+		postorder(target->left);
+	if (target->right)
+		postorder(target->right);
 	//do stuff
 	return 0;
 }
