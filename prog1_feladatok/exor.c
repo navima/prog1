@@ -4,6 +4,19 @@
 #include "string.h"
 #include "ctype.h"
 
+//https://stackoverflow.com/a/23618467/9281022
+char* strlwr_(char *str)
+{
+	unsigned char *p = (unsigned char *)str;
+
+	while (*p) {
+		*p = tolower((unsigned char)*p);
+		p++;
+	}
+
+	return str;
+}
+
 int xor_encrypt(char* source, size_t size, char* destination, char* key, size_t sizeKey)
 {
 	size_t actual_size = size-1;
@@ -57,7 +70,7 @@ int xor_crack_1byte(char* source, size_t size, char* destination)
 
 	i = size;
 	while (i-- > 0)
-		destination[i] = source[i]^key;
+		destination[i] = (char)((unsigned char)(source[i])^key);
 
 
 	return 0;
@@ -68,7 +81,7 @@ int xor_test()
 
 	char plaintext[] = "Why would you want to program? Our civilization runs on software. Withoutunderstanding software you are reduced to believing in “magic” and will belocked out of many of the most interesting, profitable, and socially useful technicalfields of work. When I talk about programming, I think of the whole spectrum ofcomputer programs from personal computer applications with GUIs (graphicaluser interfaces), through engineering calculations and embedded systems controlapplications (such as digital cameras, cars, and cell phones), to text manipulationapplications as found in many humanities and business applications. Like mathematics,programming — when";
 	size_t size = strlen(plaintext);
-	_strlwr(plaintext);
+	strlwr_(plaintext);
 
 	char ciphertext[681];
 	char decodetext[681];
