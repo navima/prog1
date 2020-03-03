@@ -8,16 +8,14 @@ int xor_encrypt(char* source, size_t size, char* destination, char* key, size_t 
 {
 	size_t actual_size = size-1;
 
-	if (strlen(destination) < size)
-		actual_size = strlen(destination);
-
-
 	for (size_t i = 0; i < actual_size; i++)
 	{
 		unsigned char sourceChar = (unsigned char)source[i];
 		unsigned char keyChar = (unsigned char)key[i%sizeKey];
 		destination[i] = (char)(sourceChar^keyChar);
 	}
+
+	destination[actual_size] = 0;
 
 	return 1;
 }
@@ -68,7 +66,7 @@ int xor_crack_1byte(char* source, size_t size, char* destination)
 int xor_test()
 {
 
-	char plaintext[] = "uve been bamboozled look at you. -navima ";
+	char plaintext[] = "nvm ";
 	size_t size = strlen(plaintext);
 	_strlwr(plaintext);
 
@@ -99,6 +97,11 @@ int xor_test()
 	FILE *f = fopen("ciphertext", "w");
 	fprintf(f, ciphertext);
 	fclose(f);
+
+	FILE *g = fopen("plaintext", "w");
+	fprintf(g, plaintext);
+	fclose(g);
+
 
 	return 0;
 }
