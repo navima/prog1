@@ -1,27 +1,32 @@
+#pragma warning(disable:4996)
+
 #include "stdio.h"
 #include "string.h"
 #include "ctype.h"
 
-int xor_encrypt(char* source, size_t size, char* destination, char key)
+int xor_encrypt(char* source, size_t size, char* destination, char* key, size_t sizeKey)
 {
 	size_t actual_size = size-1;
 
 	if (strlen(destination) < size)
 		actual_size = strlen(destination);
 
+
 	for (size_t i = 0; i < actual_size; i++)
 	{
-		destination[i] = (char) ((unsigned char) source[i] ^ (unsigned char) key);
+		unsigned char sourceChar = (unsigned char)source[i];
+		unsigned char keyChar = (unsigned char)key[i%sizeKey];
+		destination[i] = (char)(sourceChar^keyChar);
 	}
 
 	return 1;
 }
 
-int xor_decrypt(char* source, size_t size, char* destination, char key) { return xor_encrypt(source, size, destination, key); }
+int xor_decrypt(char* source, size_t size, char* destination, char* key, size_t sizeKey) { return xor_encrypt(source, size, destination, key, sizeKey); }
 
 unsigned int count_ciphertext[128];
 float distribution_ciphertext[128];
-int xor_crack(char* source, size_t size, char* destination)
+int xor_crack_1byte(char* source, size_t size, char* destination)
 {
 	//Count occurences of characters in the ciphertext
 	size_t i = size;
@@ -63,9 +68,9 @@ int xor_crack(char* source, size_t size, char* destination)
 int xor_test()
 {
 
-	char plaintext[] = "This book is meant to help the reader learn how to program in C. It contains a tutorial introduction to get new users started as soon as possible, separate chapters on each major feature, and a reference manual. Most of the treatment is based on reading, writing and revising examples, rather than on mere statements of rules. For the most part, the examples are complete, real programs rather than isolated fragments. All examples have been tested directly from the text, which is in machine-readable form. Besides showing how to make effective use of the language, we have also tried where possible to illustrate useful algorithms and principles of good style and sound design.";
+	char plaintext[] = "uve been bamboozled look at you. -navima ";
 	size_t size = strlen(plaintext);
-	_strlwr_s(plaintext,size+1);
+	_strlwr(plaintext);
 
 	char ciphertext[681];
 	char decodetext[681];
@@ -77,19 +82,23 @@ int xor_test()
 	decodetext[680] = 0;
 	cracktext[680] = 0;
 
-	unsigned char key = 1;
+	char key[] = "laci";
+	size_t sizeKey = strlen(key);
 
+	xor_encrypt(plaintext, size, ciphertext, key, sizeKey);
 
-	xor_encrypt(plaintext, size, ciphertext, key);
-
-	xor_decrypt(ciphertext, size, decodetext, key);
+	xor_decrypt(ciphertext, size, decodetext, key, sizeKey);
  
-	xor_crack(ciphertext, size, cracktext);
+	xor_crack_1byte(ciphertext, size, cracktext);
 
 	printf("%s\n\n", plaintext);
 	printf("%s\n\n", ciphertext);
 	printf("%s\n\n", decodetext);
 	printf("%s\n\n", cracktext);
+
+	FILE *f = fopen("ciphertext", "w");
+	fprintf(f, ciphertext);
+	fclose(f);
 
 	return 0;
 }
