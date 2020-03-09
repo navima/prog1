@@ -79,7 +79,7 @@ int xor_crack_1byte(char* source, size_t size, char* destination)
 
 int xor_crack_variable(char* source, size_t size, char* destination, int keyLength)
 {
-	char *asd[8];
+	char **asd = (char**)malloc(sizeof(char*)*keyLength);
 
 	for (int i = 0; i < keyLength; i++)
 	{
