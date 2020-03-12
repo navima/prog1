@@ -1,0 +1,1 @@
+magick .\out.pgm out.png
