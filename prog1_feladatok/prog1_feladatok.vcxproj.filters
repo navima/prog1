@@ -27,6 +27,9 @@
     <ClInclude Include="faLzw_tag.hpp">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="mandelbrot2.hpp">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="pch.cpp">
@@ -60,6 +63,12 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="exor.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="mandelbrot.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="mandelbrot2.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
