@@ -9,6 +9,8 @@ Project("{DA7A21FA-8162-4350-AD77-A8D1B671F3ED}") = "prog1_feladatok_R", "prog1_
 EndProject
 Project("{F184B08F-C81C-45F6-A57F-5ABD9991F28F}") = "prog1_feladatok_VB", "prog1_feladatok_VB\prog1_feladatok_VB.vbproj", "{61BAF56C-21AB-46A4-9511-75637E634BA9}"
 EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "prog1_feladatok_CUDA", "prog1_feladatok_CUDA\prog1_feladatok_CUDA.vcxproj", "{9804A6D8-59DD-4E0B-87B8-CE041EA3E759}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -53,6 +55,14 @@ Global
 		{61BAF56C-21AB-46A4-9511-75637E634BA9}.Release|x64.Build.0 = Release|Any CPU
 		{61BAF56C-21AB-46A4-9511-75637E634BA9}.Release|x86.ActiveCfg = Release|Any CPU
 		{61BAF56C-21AB-46A4-9511-75637E634BA9}.Release|x86.Build.0 = Release|Any CPU
+		{9804A6D8-59DD-4E0B-87B8-CE041EA3E759}.Debug|Any CPU.ActiveCfg = Debug|x64
+		{9804A6D8-59DD-4E0B-87B8-CE041EA3E759}.Debug|x64.ActiveCfg = Debug|x64
+		{9804A6D8-59DD-4E0B-87B8-CE041EA3E759}.Debug|x64.Build.0 = Debug|x64
+		{9804A6D8-59DD-4E0B-87B8-CE041EA3E759}.Debug|x86.ActiveCfg = Debug|x64
+		{9804A6D8-59DD-4E0B-87B8-CE041EA3E759}.Release|Any CPU.ActiveCfg = Release|x64
+		{9804A6D8-59DD-4E0B-87B8-CE041EA3E759}.Release|x64.ActiveCfg = Release|x64
+		{9804A6D8-59DD-4E0B-87B8-CE041EA3E759}.Release|x64.Build.0 = Release|x64
+		{9804A6D8-59DD-4E0B-87B8-CE041EA3E759}.Release|x86.ActiveCfg = Release|x64
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
