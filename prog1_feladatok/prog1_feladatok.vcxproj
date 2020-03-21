@@ -170,13 +170,14 @@
     <ClInclude Include="pch.h" />
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="asd.c" />
+    <ClCompile Include="ciklus.c" />
     <ClCompile Include="csere.c" />
     <ClCompile Include="exor.c" />
     <ClCompile Include="forras.c" />
     <ClCompile Include="haromszog.c" />
     <ClCompile Include="labda.c" />
     <ClCompile Include="lzw.c" />
+    <ClCompile Include="lzw_copy.cpp" />
     <ClCompile Include="mandelbrot.c" />
     <ClCompile Include="mandelbrot2.cpp" />
     <ClCompile Include="pageRank.c" />

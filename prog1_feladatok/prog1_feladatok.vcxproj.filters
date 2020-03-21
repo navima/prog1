@@ -38,9 +38,6 @@
     <ClCompile Include="prog1_feladatok.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="asd.c">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="pageRank.c">
       <Filter>Source Files</Filter>
     </ClCompile>
@@ -69,6 +66,12 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="mandelbrot2.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="ciklus.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="lzw_copy.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
