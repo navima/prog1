@@ -46,7 +46,13 @@ namespace prog1_feladatok_Mandel_Csharp
 			InitializeComponent();
 
 			myPic.MouseWheel += new MouseEventHandler(zoomHandler);
-			myPic.MouseDown += new MouseEventHandler(delegate (object sender, MouseEventArgs e) { panningStart = e.Location; panningLimitsR = limitsR; panningLimitsI = limitsI; isPanning = true; });
+			myPic.MouseDown += new MouseEventHandler(delegate (object sender, MouseEventArgs e) 
+			{
+				panningStart = e.Location;
+				panningLimitsR = limitsR;
+				panningLimitsI = limitsI;
+				isPanning = true;
+			});
 			myPic.MouseUp += new MouseEventHandler(delegate (object sender, MouseEventArgs e) { isPanning = false; redraw(); });
 			myPic.MouseMove += new MouseEventHandler(panHandler);
 			//myPic.PreviewKeyDown += new PreviewKeyDownEventHandler(keydownHandler);
@@ -109,11 +115,11 @@ namespace prog1_feladatok_Mandel_Csharp
 
 		void redraw()
 		{
-			int width = 1024;//(int) (myPic.Width * scale);
-			int height = 1024;//(int) (myPic.Height * scale);
+			int width = 1024;
+			int height = 1024;
 
 			MyBitmap = new Bitmap(width, height, System.Drawing.Imaging.PixelFormat.Format24bppRgb);
-
+			
 			//https://docs.microsoft.com/en-us/dotnet/api/system.drawing.bitmap.lockbits?view=netframework-4.8
 			System.Drawing.Imaging.BitmapData bmpData = MyBitmap.LockBits(
 				new Rectangle(0, 0, width, height),
@@ -131,7 +137,7 @@ namespace prog1_feladatok_Mandel_Csharp
 			  {
 				  for (int j = 0; j < height; j++)
 				  {
-					  int myMandel = mandel(new Complex(
+					  int myMandel = biom(new Complex(
 								  (float)i / width * (limitsR.Item2 - limitsR.Item1) + limitsR.Item1,
 								  (float)j / height * (limitsI.Item2 - limitsI.Item1) + limitsI.Item1));
 
@@ -157,5 +163,28 @@ namespace prog1_feladatok_Mandel_Csharp
 			}
 			return i;
 		}
+
+		int biom(Complex Z_)
+		{
+			Complex Z = Z_;
+			Complex D = new Complex(-0.8, 0.156);
+			Complex V = new Complex(0, 0);
+			float R = 2;
+
+
+			int i = 0;
+
+			for (i = 0; i < maxiter; i++)
+			{
+				V = Z*Z+D;
+				Z = V*V+D;
+				i++;
+
+				if (Z.Magnitude > R)
+					break;
+			}
+			return i;
+		}
+
 	}
 }
