@@ -34,9 +34,10 @@
 			// 
 			// myPic
 			// 
+			this.myPic.Dock = System.Windows.Forms.DockStyle.Fill;
 			this.myPic.Location = new System.Drawing.Point(0, 0);
 			this.myPic.Name = "myPic";
-			this.myPic.Size = new System.Drawing.Size(1000, 1000);
+			this.myPic.Size = new System.Drawing.Size(950, 614);
 			this.myPic.SizeMode = System.Windows.Forms.PictureBoxSizeMode.StretchImage;
 			this.myPic.TabIndex = 0;
 			this.myPic.TabStop = false;
@@ -45,7 +46,7 @@
 			// 
 			this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
 			this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-			this.ClientSize = new System.Drawing.Size(1005, 1011);
+			this.ClientSize = new System.Drawing.Size(950, 614);
 			this.Controls.Add(this.myPic);
 			this.KeyPreview = true;
 			this.Name = "Form1";

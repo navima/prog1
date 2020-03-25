@@ -23,13 +23,13 @@ namespace prog1_feladatok_Mandel_Csharp
 		(float, float) panningLimitsR;
 		(float, float) panningLimitsI;
 
-		private short maxiter_ = 20;
-		short maxiter
+		private ushort maxiter_ = 20;
+		ushort maxiter
 		{
 			get { return maxiter_; }
 			set
 			{
-				if (value<1)
+				if (value < 1)
 					maxiter_ = 1;
 				else
 					maxiter_ = value;
@@ -40,6 +40,9 @@ namespace prog1_feladatok_Mandel_Csharp
 
 		Bitmap MyBitmap;
 
+		bool isSelected = false;
+		Complex selection;
+
 
 		public Form1()
 		{
@@ -48,15 +51,69 @@ namespace prog1_feladatok_Mandel_Csharp
 			myPic.MouseWheel += new MouseEventHandler(zoomHandler);
 			myPic.MouseDown += new MouseEventHandler(delegate (object sender, MouseEventArgs e) 
 			{
-				panningStart = e.Location;
-				panningLimitsR = limitsR;
-				panningLimitsI = limitsI;
-				isPanning = true;
+				switch (e.Button)
+				{
+					case MouseButtons.Left:
+						panningStart = e.Location;
+						panningLimitsR = limitsR;
+						panningLimitsI = limitsI;
+						isPanning = true;
+						break;
+					case MouseButtons.None:
+						break;
+					case MouseButtons.Right:
+						if(isSelected)
+						{
+							isSelected = false;
+						}
+						else
+						{
+							isSelected = true;
+							selection = clientToComplex(flip(e.Location), flip(myPic.Size));
+							redraw();
+						}
+						break;
+					case MouseButtons.Middle:
+						break;
+					case MouseButtons.XButton1:
+						break;
+					case MouseButtons.XButton2:
+						break;
+					default:
+						break;
+				}
 			});
-			myPic.MouseUp += new MouseEventHandler(delegate (object sender, MouseEventArgs e) { isPanning = false; redraw(); });
+			myPic.MouseUp += new MouseEventHandler(delegate (object sender, MouseEventArgs e) 
+			{
+				switch (e.Button)
+				{
+					case MouseButtons.Left:
+						isPanning = false; redraw();
+						break;
+					case MouseButtons.None:
+						break;
+					case MouseButtons.Right:
+						break;
+					case MouseButtons.Middle:
+						break;
+					case MouseButtons.XButton1:
+						break;
+					case MouseButtons.XButton2:
+						break;
+					default:
+						break;
+				}
+			});
 			myPic.MouseMove += new MouseEventHandler(panHandler);
-			//myPic.PreviewKeyDown += new PreviewKeyDownEventHandler(keydownHandler);
 			this.KeyDown += new KeyEventHandler(keydownHandler);
+		}
+
+		void drawSelected(Complex Z)
+		{
+			using (var g = Graphics.FromImage(myPic.Image))
+			{
+				g.FillRectangle(Brushes.AliceBlue, 0, 0, 250, 120);
+			}
 		}
 
 		void keydownHandler(object sender, KeyEventArgs e)
@@ -106,6 +163,11 @@ namespace prog1_feladatok_Mandel_Csharp
 
 				redraw();
 			}
+			if(isSelected)
+			{
+				selection = clientToComplex(flip(e.Location), flip(myPic.Size));
+				redraw();
+			}
 		}
 
 		private void Form1_Load(object sender, EventArgs e)
@@ -137,9 +199,11 @@ namespace prog1_feladatok_Mandel_Csharp
 			  {
 				  for (int j = 0; j < height; j++)
 				  {
-					  int myMandel = biom(new Complex(
-								  (float)i / width * (limitsR.Item2 - limitsR.Item1) + limitsR.Item1,
-								  (float)j / height * (limitsI.Item2 - limitsI.Item1) + limitsI.Item1));
+					  //uint myMandel = biom(new Complex(
+					  //	  (float)i / width * (limitsR.Item2 - limitsR.Item1) + limitsR.Item1,
+					  //	  (float)j / height * (limitsI.Item2 - limitsI.Item1) + limitsI.Item1));
+
+					  uint myMandel = mandel(clientToComplex(new Point(i, j), new Size(width, height)));
 
 					  rgbValues[i * 3 * width + j * 3+2] = (byte)(255-(((float)myMandel / maxiter) * 255));
 				  }
@@ -148,14 +212,24 @@ namespace prog1_feladatok_Mandel_Csharp
 			System.Runtime.InteropServices.Marshal.Copy(rgbValues, 0, ptr, bytes);
 			MyBitmap.UnlockBits(bmpData);
 
+			using (var g = Graphics.FromImage(MyBitmap))
+			{
+				if(limitsR.Item1 < selection.Real && selection.Real < limitsR.Item2)
+				{
+					g.DrawLine(Pens.AliceBlue, new Point(0,0), flip(complexToClient(selection, MyBitmap.Size)));
+					g.DrawLines(Pens.AliceBlue, flip(complexToClient(GetChainMandel(selection),MyBitmap.Size)));
+				}
+			}
+
+
 			myPic.Image = MyBitmap;
 		}
 
-		int mandel(Complex D)
+		uint mandel(Complex D)
 		{
 			Complex Z = D;
-			int i = 0;
-			for(i=0;i<maxiter;i++)
+			uint i = 0;
+			for(i=0; i<maxiter; i++)
 			{
 				Z = Z * Z + D;
 				if (Z.Magnitude > 2)
@@ -164,16 +238,40 @@ namespace prog1_feladatok_Mandel_Csharp
 			return i;
 		}
 
-		int biom(Complex Z_)
+		Complex[] GetChainMandel(Complex D)
+		{
+			List<Complex> chain = new List<Complex>();
+			chain.Add(new Complex(0, 0));
+			Complex Z = D;
+			uint i = 0;
+			for (i = 0; i < maxiter; i++)
+			{
+				chain.Add(Z);
+				Z = Z * Z + D;
+				if (Z.Magnitude > 2)
+					break;
+			}
+			return chain.ToArray();
+		}
+
+		Point[] complexToClient(Complex[] complices, Size clientSize)
+		{
+			Point[] points = new Point[complices.Length];
+			for(int i = 0;i<complices.Length; i++)
+			{
+				points[i] = complexToClient(complices[i], clientSize);
+			}
+			return points;
+		}
+
+		uint biom(Complex Z_)
 		{
 			Complex Z = Z_;
 			Complex D = new Complex(-0.8, 0.156);
 			Complex V = new Complex(0, 0);
 			float R = 2;
 
-
-			int i = 0;
-
+			uint i = 0;
 			for (i = 0; i < maxiter; i++)
 			{
 				V = Z*Z+D;
@@ -186,5 +284,41 @@ namespace prog1_feladatok_Mandel_Csharp
 			return i;
 		}
 
+		Point complexToClient(Complex Z, Size clientSize)
+		{
+			return new Point(
+				(int)((Z.Real - limitsR.Item1) / (limitsR.Item2 - limitsR.Item1) * clientSize.Width),
+				(int)((Z.Imaginary - limitsI.Item1) / (limitsI.Item2 - limitsI.Item1) * clientSize.Height));
+		}
+
+		Point flip(Point A)
+		{
+			return new Point(A.Y, A.X);
+		}
+
+		Point[] flip(Point[] A)
+		{
+			Point[] points = new Point[A.Length];
+			for (int i = 0; i < A.Length; i++)
+				points[i] = flip(A[i]);
+			return points;
+		}
+
+		Complex flip (Complex A)
+		{
+			return new Complex(A.Imaginary, A.Real);
+		}
+
+		Size flip(Size A)
+		{
+			return new Size(A.Height, A.Width);
+		}
+
+		Complex clientToComplex(Point client, Size clientSize)
+		{
+			return new Complex(
+				client.X / (float)clientSize.Width * (limitsR.Item2 - limitsR.Item1) + limitsR.Item1,
+				client.Y / (float)clientSize.Height * (limitsI.Item2 - limitsI.Item1) + limitsI.Item1);
+		}
 	}
 }
