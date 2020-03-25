@@ -115,6 +115,8 @@ int main()
 
 	cudaDeviceReset();
 
+	delete[] bReal;
+	delete[] bImag;
 
 	std::ofstream out;
 	out.open("out.pgm");
@@ -129,7 +131,7 @@ int main()
 
 	out.close();
 
-	delete[] bReal;
-	delete[] bImag;
+	//convert to png with 'magick out.pgm out.png'
+
 	delete[] iter;
 }
