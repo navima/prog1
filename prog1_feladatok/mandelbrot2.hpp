@@ -1,15 +1,92 @@
 #pragma once
 
-#include "stdio.h"
+#include <iostream>
 #include <complex>
 
-float pixelXtoReal(int x);
-
-float pixelYtoImaginary(int y);
+float pixelXtoReal(int);
+float pixelYtoImaginary(int);
+int mandel(float, float);
+int biom(float, float);
 
 template <typename T>
-std::complex<T> mappingSquare(std::complex<T> Z, std::complex<T> C);
+std::complex<T> mappingSquare(std::complex<T> Z, std::complex<T> C)
+{
+	return Z * Z + C;
+}
 
-int mandel(float real, float imaginary);
+constexpr auto WIDTH = 50;
+constexpr auto HEIGHT = 100;
+constexpr auto maxIter = 25;
 
-int test();
+float pixelXtoReal(int x)
+{
+	float min = -2;
+	float size = 4;
+	return ((float)x / (float)WIDTH) * size + min;
+}
+
+float pixelYtoImaginary(int y)
+{
+	float min = -2;
+	float size = 4;
+	return ((float)y / (float)HEIGHT) * size + min;
+}
+
+int mandel(float real, float imaginary)
+{
+	std::complex<float> Z(0, 0);
+	std::complex<float> C(real, imaginary);
+
+	int i = 0;
+
+	while (i < maxIter && abs(Z) < 2)
+	{
+		Z = mappingSquare(Z, C);
+		i++;
+	}
+
+	return i;
+}
+
+int biom(float real, float imaginary)
+{
+	std::complex<float> Z(real, imaginary);
+	std::complex<float> D(-0.8f, 0.156f);
+	std::complex<float> V(0, 0);
+	float R = 2;
+
+
+	int i = 0;
+
+	for(i = 0;i<maxIter;i++)
+	{
+		V = mappingSquare(Z, D);
+		Z = mappingSquare(V, D);
+		i++;
+
+		if (abs(Z) > R)
+			break;
+	}
+
+	return i;
+}
+
+int test()
+{
+		char pontok[WIDTH][HEIGHT];
+	
+		std::string chars = " .:!#ß";
+	
+		for (int i = 0; i < WIDTH; i++)
+		{
+			for (int j = 0; j < HEIGHT; j++)
+			{
+				pontok[i][j] = biom(pixelXtoReal(i), pixelYtoImaginary(j));
+	
+				std::cout << chars[(float)pontok[i][j] / maxIter * (chars.length() - 1)];
+			}
+			std::cout << "\n";
+		}
+	
+	return 0;
+}

@@ -1,14 +1,11 @@
-﻿#include "stdio.h"
+﻿//#include "stdio.h"
 
-#define WIDTH 50
-#define HEIGHT 100
+#include "mandelbrot.h"
 
-float pixelXtoReal(int);
-float pixelYtoImaginary(int);
-int mandel(float, float);
-int mappingSquare(float, float, float, float, float*, float*);
+//#define WIDTH 50
+//#define HEIGHT 100
 
-int test()
+int testC()
 {
 	int pontok[WIDTH][HEIGHT];
 
@@ -16,7 +13,7 @@ int test()
 	{
 		for (int j = 0; j < HEIGHT; j++)
 		{
-			pontok[i][j] = mandel(pixelXtoReal(i), pixelYtoImaginary(j));
+			pontok[i][j] = mandelC(pixelXtoRealC(i), pixelYtoImaginaryC(j));
 			if (pontok[i][j] == 25)
 			{
 				printf("#");
@@ -35,21 +32,21 @@ int test()
 	return 0;
 }
 
-float pixelXtoReal(int x)
+float pixelXtoRealC(int x)
 {
 	float min = -2;
 	float size = 3;
 	return ((float)x / (float)WIDTH) * size + min;
 }
 
-float pixelYtoImaginary(int y)
+float pixelYtoImaginaryC(int y)
 {
 	float min = -1;
 	float size = 2;
 	return ((float)y / (float)HEIGHT) * size + min;
 }
 
-int mandel(float real, float imaginary)
+int mandelC(float real, float imaginary)
 {
 	float Zreal = 0;
 	float Zimaginary = 0;
@@ -57,14 +54,14 @@ int mandel(float real, float imaginary)
 
 	while(i<25 && Zreal<2 && Zimaginary<2)
 	{
-		mappingSquare(Zreal, Zimaginary, real, imaginary, &Zreal, &Zimaginary);
+		mappingSquareC(Zreal, Zimaginary, real, imaginary, &Zreal, &Zimaginary);
 		i++;
 	}
 
 	return i;
 }
 
-int mappingSquare(float Zreal, float Zimaginary, float Creal, float Cimaginary, float* realDest, float* imaginaryDest)
+int mappingSquareC(float Zreal, float Zimaginary, float Creal, float Cimaginary, float* realDest, float* imaginaryDest)
 {
 	
 	float temp = Zreal * Zreal - Zimaginary * Zimaginary + Creal;

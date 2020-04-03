@@ -84,7 +84,7 @@ void mandelWithCuda(unsigned short int* iter, const float* bR, const float* bI, 
 	dim3 dimBlock = dim3(std::min(1024u, size));;
 	dim3 dimGrid = dim3(std::ceil((float)size / 1024));
 
-	mappingSquareKernel << <dimGrid, dimBlock >> > (dev_iter, dev_bR, dev_bI);
+	mappingBiomKernel << <dimGrid, dimBlock >> > (dev_iter, dev_bR, dev_bI);
 
 	asd = cudaGetLastError();
 
