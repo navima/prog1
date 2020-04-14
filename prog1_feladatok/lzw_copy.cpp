@@ -115,15 +115,15 @@ public:
 };
 
 template <typename T>
-class ZLWTree : public BinTree<T>
+class LZWTree : public BinTree<T>
 {
 public:
-	ZLWTree() : BinTree<T>(new typename BinTree<T>::Node('/'))
+	LZWTree() : BinTree<T>(new typename BinTree<T>::Node('/'))
 	{
 		this->treep = this->root;
 	}
 
-	ZLWTree & operator<<(T value)
+	LZWTree & operator<<(T value)
 	{
 		if (value == '0')
 		{

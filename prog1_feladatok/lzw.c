@@ -56,7 +56,7 @@ int lzw()
 {
 	fa myFa = {0, 0, -1};
 
-	char asd[4] = { '0','1','0','0' };
+	char asd[6] = { '0','1','0','0', '0', '1' };
 
 	fa_insert(&myFa, asd, 3);
 

@@ -1,13 +1,7 @@
 #include <iostream>
-#include <string>
-#include "mandelbrot2.hpp"
-//#include "mandelbrot.c"
-
+#include "lzw_copy_2.cpp"
 
 int main()
 {
-	std::string asd;
-	std::cin >> asd;
-
-	test();
+	kek12();
 }

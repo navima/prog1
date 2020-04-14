@@ -170,6 +170,7 @@
     <ClInclude Include="mandelbrot.h" />
     <ClInclude Include="mandelbrot2.hpp" />
     <ClInclude Include="pch.h" />
+    <ClInclude Include="polar.hpp" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="asd.cpp" />
@@ -181,6 +182,7 @@
     <ClCompile Include="labda.c" />
     <ClCompile Include="lzw.c" />
     <ClCompile Include="lzw_copy.cpp" />
+    <ClCompile Include="lzw_copy_2.cpp" />
     <ClCompile Include="mandelbrot.c" />
     <ClCompile Include="mandelbrot2.cpp" />
     <ClCompile Include="pageRank.c" />

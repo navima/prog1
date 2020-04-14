@@ -36,6 +36,9 @@
     <ClInclude Include="asd.hpp">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="polar.hpp">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="pch.cpp">
@@ -81,6 +84,9 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="asd.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="lzw_copy_2.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
