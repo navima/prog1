@@ -89,5 +89,8 @@
     <ClCompile Include="lzw_copy_2.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="lzw_copy_3.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
 </Project>
