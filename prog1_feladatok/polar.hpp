@@ -7,23 +7,23 @@ class polar
 {
 private:
 	T value;	/* Az ertekunk */
-	bool valid = false;	/* Az eltarolt valtozo */
-	void calcValue()	/* A fuggveny amivel kiszamoljuk az erteket */
-	{
-		value = (T)rand();
-	}
+	T nextValue /* A kovetkezo ertekunk */
+	bool havenext = false;	/* Az eltarolt valtozo */
+	
 public:
 	T getValue()	/* A getter funkcio */
 	{
-		if (valid)	/* Megnezzuk  hogy van-e mar szamolva ertek*/
+		if (havenext)	/* Megnezzuk  hogy van-e mar szamolva kovetkezo ertek*/
 		{
-			return value;	/* ha igen, visszaterunk vele */
+			havenext = false;	/* felhasznaltuk a kovetkezo erteket */
+			return nextValue;	/* visszaterunk vele */
 		}
 		else
 		{
-			calcValue();	/* ha nem, kiszamoljuk es utana terunk vissza vele */ 
-			valid = true;
-			return value;
+			value = rand();		/* kiszamoljuk a mostani es a kovetkezo erteket */
+			nextValue = rand();
+			havenext = true;	/* van eltarolt kovetkezo ertekunk */
+			return value;		/* visszaterunk az ertekkel */
 		}
 	}
 };
