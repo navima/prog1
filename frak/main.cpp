@@ -1,11 +1,11 @@
 #include <QApplication>
-#include "frakablak.h"
+#include "widgetMandel.h"
 
 int main(int argc, char *argv[])
 {
     QApplication a(argc, argv);
-    FrakAblak w1;
-    w1.show();
+    widgetMandel w1(-2,+2,-2,+2,600,15);   /* csinálunk egy widgetMandel típusú widgetet */
+    w1.show();      /* megjelenítjük azt a widgetet */
 
     /*
     FrakAblak w1,

@@ -9,5 +9,7 @@ TARGET = frak
 INCLUDEPATH += .
 
 # Input
-HEADERS += frakablak.h frakszal.h
-SOURCES += frakablak.cpp frakszal.cpp main.cpp
+HEADERS += frakszal.h \
+    widgetMandel.h
+SOURCES += frakszal.cpp main.cpp \
+    widgetMandel.cpp

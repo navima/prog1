@@ -9,24 +9,25 @@
 
 class FrakSzal;
 
-class FrakAblak : public QMainWindow
+class widgetMandel : public QMainWindow
 {
     Q_OBJECT
 
 public:
-    FrakAblak(double a = -2.0, double b = .7, double c = -1.35,
-              double d = 1.35, int szelesseg = 600,
+    widgetMandel(double realMin = -2.0, double realMax = .7, double imagMin = -1.35,
+              double imagMax = 1.35, int szelesseg = 600,
               int iteraciosHatar = 255, QWidget *parent = 0);
-    ~FrakAblak();
+    ~widgetMandel();
+
     void vissza(int magassag , int * sor, int meret) ;
     void vissza(void) ;
-    // A komplex sík vizsgált tartománya [a,b]x[c,d].
-    double a, b, c, d;
+
+    double realMin, realMax, imagMin, imagMax;
+
     // A komplex sík vizsgált tartományára feszített
     // háló szélessége és magassága.
     int szelesseg, magassag;
-    // Max. hány lépésig vizsgáljuk a z_{n+1} = z_n * z_n + c iterációt?
-    // (tk. most a nagyítási pontosság)
+
     int iteraciosHatar;
 
 protected:
@@ -38,10 +39,12 @@ protected:
 
 private:
     QImage* fraktal;
-    FrakSzal* mandelbrot;
+    FrakSzal* computationThread;
     bool szamitasFut;
     // A nagyítandó kijelölt területet bal felsõ sarka.
-    int x, y;
+    int x = 0;
+    int y = 0;
     // A nagyítandó kijelölt terület szélessége és magassága.
-    int mx, my;
+    int mx = 0;
+    int my = 0;
 };
