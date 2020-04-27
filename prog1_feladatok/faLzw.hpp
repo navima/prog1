@@ -10,38 +10,40 @@ public:
 
 	Node<char>* tree = new Node<char>;
 
-
 	Tree() {};
 
 	~Tree() { delete tree; }
 
-	Tree(const Tree& old)
+	Tree(const Tree& old) : tree(new Node<char>(*old.tree))
 	{
-		tree = new Node<char>(*old.tree);
 	}
 
 	Tree& operator=(Tree& old)
 	{
-		Tree temp(old);
-		std::swap(*this, temp);
+		if (&old != this)
+		{
+			Tree temp(old);
+			std::swap(*this, temp);
+		}
 		return *this;
 	}
 
 	Tree& operator=(Tree&& old)
 	{
-		std::swap(old.tree, tree);
+
+		if (&old != this)
+			std::swap(old.tree, tree);
 		return *this;
 	}
 
-	Tree(Tree&& old)
+	Tree(Tree&& old) : tree{ new Node<char>(std::move(*old.tree)) }
 	{
-		tree = new Node<char>(std::move(*old.tree));
 	}
 
 
-	int insert(std::string const& toInsert, unsigned int index = 0, Node<char>* Node = nullptr)
+	int insert(std::string const& toInsert, size_t index = 0, Node<char>* Node = nullptr)
 	{
-		if ((unsigned int)toInsert.length() > index)		//Ha bárki megmondja nekem hogy miért nem képes a c++ normálisan összehasonlítani két nem pontosan ugyanolyan típusú integert akkor boldogan halok meg
+		if (toInsert.length() > index)		//Ha bárki megmondja nekem hogy miért nem képes a c++ normálisan összehasonlítani két nem pontosan ugyanolyan típusú integert akkor boldogan halok meg
 		{
 			char relevantBit = toInsert[index];    //Lemásoljuk a stringből az "első" (csak számunkra első) karaktert mert majd sokszor fogunk referálni rá
 

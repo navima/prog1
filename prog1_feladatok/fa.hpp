@@ -19,7 +19,7 @@ class Node
 //minden member funkcióját és változóját amit ez után írunk publikussá tesszük
 public:
 
-	T data = false;			//Az adat amit tárol a Node
+	T data{};			//Az adat amit tárol a Node
 	Node<T>* left = nullptr;		//a bal részfára mutató mutató (lol)
 	Node<T>* right = nullptr;		//a jobb részfára mutató mutató
 	int depth = 0;		//a Node mélysége = hanyadik szinten van a Node a hierarchiában -majd csak a bináris fában fogjuk használni a beszúrásnál, de itt is hasznos lehet
@@ -36,7 +36,7 @@ public:
 
 	Node() {};
 
-	Node(T data)
+	Node(const T& data)
 	{
 		this->data = data;
 	}
