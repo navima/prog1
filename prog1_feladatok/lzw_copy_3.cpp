@@ -35,10 +35,10 @@ protected:
 
 private:
 	// TODO rule of five
-	BinTree(const BinTree &);
-	BinTree & operator=(const BinTree &);
-	BinTree(const BinTree &&);
-	BinTree & operator=(const BinTree &&);
+	//BinTree(const BinTree &);
+	//BinTree & operator=(const BinTree &);
+	//BinTree(const BinTree &&);
+	//BinTree & operator=(const BinTree &&);
 
 public:
 	BinTree(Node *root = nullptr, Node *treep = nullptr) : root(root), treep(treep) {}
@@ -175,7 +175,7 @@ ZLWTree<T> & ZLWTree<T>::operator<<(T value)
 	return *this;
 }
 
-int main(int argc, char** argv, char ** env)
+int test(int argc, char** argv, char ** env)
 {
 	BinTree<int> bt;
 
@@ -191,4 +191,5 @@ int main(int argc, char** argv, char ** env)
 
 	zt.print();
 
+	return 0;
 }

@@ -12,7 +12,7 @@ FrakSzal::FrakSzal(double realMin, double realMax, double imagMin, double imagMa
     this->frakAblak = frakAblak;
     this->magassag = magassag;
 
-    egySor = new int[szelesseg];
+    egySor = new int[szelesseg];       // itt foglaljuk le a kiszámolt értékeknek a helyet. nem kell kitakarítani, mert úgyis felülírjuk az összes értéket
 }
 
 FrakSzal::~FrakSzal()
@@ -31,32 +31,23 @@ void FrakSzal::run()
     {
         for(int k=0; k<szelesseg; k++)
         {
-            std::complex<double> c(realMin+k*dx, imagMax-j*dy);
+            std::complex<double> c(realMin+k*dx, imagMax-j*dy); //az éppen aktuális komplex szám
 
             std::complex<double> z(0, 0);
             iteracio = 0;
 
-        while( std::abs(z) < 4 && iteracio < iteraciosHatar) {
+        while( std::abs(z) < 4 && iteracio < iteraciosHatar) {  //a tényleges mandel számítás
           z = z  * z + c;
 
           iteracio++;
         }
 
-            // ha a < 4 feltétel nem teljesült és a
-            // iteráció < iterációsHatár sérülésével lépett ki, azaz
-            // feltesszük a c-rõl, hogy itt a z_{n+1} = z_n * z_n + c
-            // sorozat konvergens, azaz iteráció = iterációsHatár
-            // ekkor az iteráció %= 256 egyenlõ 255, mert az esetleges
-            // nagyítasok során az iteráció = valahány * 256 + 255
+            iteracio %= 256;    //hogy nagyobb maxiterációnál is nézzen ki valahogy a képünk, 256ossával újrakezdi a fekete-zöld gradienst
 
-            iteracio %= 256;
-
-            //a színezést viszont már majd a FrakAblak osztályban lesz
-            egySor[k] = iteracio;
+            egySor[k] = iteracio;   //eltároljuk a kiszámított értéket
         }
-        // Ábrázolásra átadjuk a kiszámolt sort a FrakAblak-nak.
+        // Ábrázolásra átadjuk a kiszámolt sort a frakAblak-nak.
         frakAblak->vissza(j, egySor, szelesseg);
     }
-    frakAblak->vissza();
-
+    frakAblak->vissza();    //Ezzel jelezzük hogy kész vagyunk
 }

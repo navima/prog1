@@ -8,14 +8,37 @@ class Tree
 {
 public:
 
-	Node<char>* tree = new Node<char>;		//A bináris fának egy darab memberváltozója kell hogy mindenképp legyen: egy Node
-										//Ebben az esetben <char>-fát használunk mert az áll legközelebb a bitekhez (a booleanok csúnyák, dont @ me)
+	Node<char>* tree = new Node<char>;
 
 
+	Tree() {};
+
+	~Tree() { delete tree; }
+
+	Tree(const Tree& old)
+	{
+		tree = new Node<char>(*old.tree);
+	}
+
+	Tree& operator=(Tree& old)
+	{
+		Tree temp(old);
+		std::swap(*this, temp);
+		return *this;
+	}
+
+	Tree& operator=(Tree&& old)
+	{
+		std::swap(old.tree, tree);
+		return *this;
+	}
+
+	Tree(Tree&& old)
+	{
+		tree = new Node<char>(std::move(*old.tree));
+	}
 
 
-	//EZ VALAMIÉRT A SHREKEN SEGFAULTOT AD (STACK?) DE EGYÉBKÉNT MŰKÖDIK
-	//A SZERVEREN CSAK A STREAMES MEGOLDÁS MŰKÖDIK (~67.SOR+)
 	int insert(std::string const& toInsert, unsigned int index = 0, Node<char>* Node = nullptr)
 	{
 		if ((unsigned int)toInsert.length() > index)		//Ha bárki megmondja nekem hogy miért nem képes a c++ normálisan összehasonlítani két nem pontosan ugyanolyan típusú integert akkor boldogan halok meg
@@ -67,7 +90,7 @@ public:
 
 
 	//Ez egy nemrekurzív megoldás istream-ekkel (azok annyit tudnak hogy a következő karaktert beolvassák, ilyen pl. a "cin")
-	int insert(std::istream & insertStream, std::ostream & asd, Node<char>* Node = nullptr)
+	int insert(std::istream & insertStream, Node<char>* Node = nullptr)
 	{
 		int length = 0;
 		while (insertStream && !insertStream.eof()) //Ez addig fog futni amíg a stream 'jó'  -ÉS-  a mostani karakter nem EndOfFile
@@ -77,7 +100,6 @@ public:
 			//insertStream >> relevantBit;
 			insertStream.get(relevantBit);	//itt ugyanazt csinálja a 'get' meg a '>>', de általában '>>' a formázott inputra jó, a 'get' pedig a nyers adatra
 			length++;
-			asd<<(relevantBit);
 
 
 			if (relevantBit == '0')
@@ -106,17 +128,10 @@ public:
 
 
 	void fill(std::istream& fillStream) {
-		std::ofstream b("asd");
 		auto done = 0;
 		while (fillStream)
 		{
-			done += insert(fillStream, b, tree);
+			done += insert(fillStream, tree);
 		}
-		b.close();
-		std::ifstream a("asd");
-		char c = '0';
-		if (done < 1002)
-			while (a >> c) std::cout << c;
-		std::cout << "\n";
 	}
 };

@@ -4,6 +4,7 @@
 #include <vector>
 #include <functional>
 #include <cmath>
+#include <string>
 
 //Templateljük, hogy ne csak egy típusú Node legyen, hanem egy Node "gyár", amiből
 //tettszőleges típusú fát csinálhatunk (ha a típus implementálja a '>' '<' '==' operátorokat)
@@ -11,15 +12,16 @@
 //a Node kódján belül a típusára T-ként referálhatunk
 //Itt a Node típusa azt határozza meg hogy milyen adat van benne (data változó)
 
-template <typename T> class Node
+template <typename T> 
+class Node
 {
 
 //minden member funkcióját és változóját amit ez után írunk publikussá tesszük
 public:
 
 	T data = false;			//Az adat amit tárol a Node
-	Node<T>* left;		//a bal részfára mutató mutató (lol)
-	Node<T>* right;		//a jobb részfára mutató mutató
+	Node<T>* left = nullptr;		//a bal részfára mutató mutató (lol)
+	Node<T>* right = nullptr;		//a jobb részfára mutató mutató
 	int depth = 0;		//a Node mélysége = hanyadik szinten van a Node a hierarchiában -majd csak a bináris fában fogjuk használni a beszúrásnál, de itt is hasznos lehet
 	
 	int _leaves = 0;
@@ -31,6 +33,43 @@ public:
 	auto find(T t) { return keres_iter(t); }
 	auto remove(T t) { return torol(t); }
 	auto height() { return magassag(); };
+
+	Node() {};
+
+	Node(T data)
+	{
+		this->data = data;
+	}
+
+	Node(const Node<T>& other)
+	{
+		data = other.data;
+		if(other.left)
+			left = new Node<T>(*other.left);
+		if(other.right)
+			right = new Node<T>(*other.right);
+	}
+
+	Node(Node<T>&& old)
+	{
+		if (old.left)
+		{
+			left = old.left;
+			old.left = nullptr;
+		}
+		if (old.right)
+		{
+			right = old.right;
+			old.right = nullptr;
+		}
+		data = old.data;
+	}
+
+	~Node()
+	{
+		delete left;
+		delete right;
+	}
 
 	int getLeaves()
 	{
@@ -54,7 +93,7 @@ public:
 		else
 			outdated = true;
 
-			left = new Node<T>;
+			left = new Node<T>();
 			left->depth = depth + 1;
 			return true;
 	}
@@ -66,7 +105,7 @@ public:
 		else
 			outdated = true;
 
-			right = new Node<T>;
+			right = new Node<T>();
 			right->depth = depth + 1;
 			return true;
 	}
@@ -239,50 +278,6 @@ public:
 		}
 	}
 
-	bool torol(const T& toDelete)
-	{
-		outdated = true;
-
-		if (data > toDelete)
-			if (left)
-				return left->torol(toDelete);
-			else
-				//Not found
-				return false;
-
-
-		if (data < toDelete)
-			if (right)
-				return right->torol(toDelete);
-			else
-				//Not found
-				return false;
-
-		//Equal
-		if (!left && right)
-			return this = right;
-
-		if (!right && left)
-			return this = left;
-
-		//Equal but we still have data in our subtrees
-
-		//Find smallest (leftmost) element of right subtree
-		Node<T>* leftmost = right;
-
-		while (leftmost->left)
-			leftmost = leftmost->left;
-
-		//Make that element the new root of this tree
-		data = leftmost->data;
-
-		//Delete original to avoid duplicates
-		right->torol(data);
-
-		return true;
-	}
-
-
 	//Lusta voltam megcsinálni mégegy bejárást úgyhogy a preordert hívom meg egy lambdával ami akkor adja hozzá a depthet a vektorhoz ha levélelemen van meghívva
 	
 	std::vector<int> branchLengths()
@@ -330,7 +325,7 @@ public:
 		std::vector<std::string> out;
 		out.resize(_height+1);
 
-		print2r(out, _height, this, width);
+		print2r(out, _height, this, (int)width);
 
 		for (auto elem : out)
 		{
@@ -380,7 +375,7 @@ public:
 
 			if (FaCurr)
 			{
-				out.at(depth) += pre + FaCurr->data;
+				out.at(depth) += pre + std::to_string(FaCurr->data);
 				//out.at(depth - 1) += pre;
 			}
 			else

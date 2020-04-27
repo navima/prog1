@@ -109,7 +109,7 @@ public:
 		
 		if (node)
 		{
-			newNode = new Node(node->getValue());
+			newNode = new Node<T>(node->getValue());
 
 			newNode->leftChild(cp(node->leftChild(), treep));
 			newNode->rightChild(cp(node->rightChild(), treep));
@@ -226,16 +226,3 @@ public:
 	}
 
 };
-
-int kek12()
-{
-	BinTree<int> myBinTree;
-	myBinTree << 8 << 9 << 5 << 2 << 7;
-	myBinTree.print();
-	std::cout << std::endl;
-	LZWTree<char> maLZWTree;
-	maLZWTree << '0' << '1' << '1' << '1' << '1' << '0' << '0' << '1' << '0' << '0' << '1' << '0' << '0' << '1' << '0' << '0' << '0' << '1' << '1' << '1';
-	maLZWTree.print();
-
-	return 0;
-}

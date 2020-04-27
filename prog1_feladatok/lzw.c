@@ -4,18 +4,21 @@
 //Hogy tudja saját magát tartalmazni a fa, itt deklarájuk, hogy létezik
 typedef struct fa fa;
 
+//egy funkció ami majd a pre, in és posztorder által lesz meghívva a megfelelő helyen
+typedef void(*faActor)(fa*);
+
 //A fa struktúránk
 struct fa
 {
-	fa *left;
-	fa *right;
+	fa* left;
+	fa* right;
 	int value;
 };
 
 //Standard LZW beillesztés
-int fa_insert(fa *target, char *toInsert, int length)
+int fa_insert(fa* target, char* toInsert, int length)
 {
-	fa *curr = target;
+	fa* curr = target;
 	int strIndex = 0; //Hol tartunk a beillesztendő sztingben
 	int success = 0;  //sikerült-e beilleszteni
 
@@ -25,7 +28,7 @@ int fa_insert(fa *target, char *toInsert, int length)
 		curr = target;
 		while (!success && strIndex < length) //addig megyünk amíg nem lett sikeres egy beillesztés vagy a stringünk végére nem értünk
 		{
-			if (toInsert[strIndex] = '0') //balra szúrunk be
+			if (toInsert[strIndex] == '0') //balra szúrunk be
 				if (curr->left)
 					curr = curr->left, strIndex++; //már volt ott érték, tehát folytatjuk a beszúrást azon a részfán
 				else
@@ -33,39 +36,69 @@ int fa_insert(fa *target, char *toInsert, int length)
 			else if (curr->right)	//ugyanez jobbra
 				curr = curr->right, strIndex++;
 			else
-				curr->right = (fa *)malloc(sizeof(fa)), curr->left->value = 1, curr->left->left = 0, curr->left->right = 0, strIndex++, success = 1;
+				curr->right = (fa *)malloc(sizeof(fa)), curr->right->value = 1, curr->right->left = 0, curr->right->right = 0, strIndex++, success = 1;
 		}
 	}
 	return 0;
 }
 
-int preorder(fa *target)
+void fa_preorder(fa* target, faActor f)
 {
 	//do stuff
+	f(target);
 	if (target->left)
-		preorder(target->left);
+		fa_preorder(target->left, f);
 	if (target->right)
-		preorder(target->right);
-	return 0;
+		fa_preorder(target->right, f);
 }
 
-int postorder(fa *target)
+void fa_postorder(fa* target, faActor f)
 {
 	if (target->left)
-		postorder(target->left);
+		fa_postorder(target->left, f);
 	if (target->right)
-		postorder(target->right);
+		fa_postorder(target->right, f);
 	//do stuff
-	return 0;
+	f(target);
 }
 
-int lzw()
+void fa_inorder(fa* target, faActor f)
 {
-	fa myFa = {0, 0, -1};
+	if (target->left)
+		fa_inorder(target->left, f);
+	//do stuff
+	f(target);
+	if (target->right)
+		fa_inorder(target->right, f);
+}
+
+
+void fa_print(fa* target)
+{
+	printf("%d ", target->value);
+}
+
+void fa_free(fa* target)
+{
+	free(target);
+}
+
+
+int test()
+{
+	fa* myFa = (fa*)malloc(sizeof(fa));
+	myFa->left = 0;
+	myFa->right = 0;
+	myFa->value = -1;
 
 	char asd[7] = {'0', '1', '0', '0', '0', '1', 0};
 
-	fa_insert(&myFa, asd, 5);
+	fa_insert(myFa, asd, 6);
+
+	fa_inorder(myFa, &fa_print);
+
+	fa_postorder(myFa, &fa_free);
+	myFa = 0;
 
 	return 0;
 }
