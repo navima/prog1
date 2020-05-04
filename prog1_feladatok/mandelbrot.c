@@ -65,7 +65,7 @@ int mappingSquareC(float Zreal, float Zimaginary, float Creal, float Cimaginary,
 {
 	
 	float temp = Zreal * Zreal - Zimaginary * Zimaginary + Creal;
-	*imaginaryDest = 2.0 * Zreal * Zimaginary + Cimaginary;
+	*imaginaryDest = (float) (2.0 * Zreal * Zimaginary + Cimaginary);
 	*realDest = temp;
 
 	return 0;

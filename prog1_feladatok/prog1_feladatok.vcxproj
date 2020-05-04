@@ -182,8 +182,6 @@
     <ClCompile Include="labda.c" />
     <ClCompile Include="lzw.c" />
     <ClCompile Include="lzw_copy.cpp" />
-    <ClCompile Include="lzw_copy_2.cpp" />
-    <ClCompile Include="lzw_copy_3.cpp" />
     <ClCompile Include="mandelbrot.c" />
     <ClCompile Include="mandelbrot2.cpp" />
     <ClCompile Include="pageRank.c" />

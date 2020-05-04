@@ -1,78 +1,47 @@
-// BHAX Myrmecologist
-//
-// Copyright (C) 2019
-// Norbert Bátfai, batfai.norbert@inf.unideb.hu
-//
-//  This program is free software: you can redistribute it and/or modify
-//  it under the terms of the GNU General Public License as published by
-//  the Free Software Foundation, either version 3 of the License, or
-//  (at your option) any later version.
-//
-//  This program is distributed in the hope that it will be useful,
-//  but WITHOUT ANY WARRANTY; without even the implied warranty of
-//  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-//  GNU General Public License for more details.
-//
-//  You should have received a copy of the GNU General Public License
-//  along with this program.  If not, see <https://www.gnu.org/licenses/>.
-//
-// https://bhaxor.blog.hu/2018/09/26/hangyaszimulaciok
-// https://bhaxor.blog.hu/2018/10/10/myrmecologist
-//
-
 #pragma once
 
 #include <QThread>
-
 #include "ant.hpp"
 
 class AntThread: public QThread
 {
     Q_OBJECT
 
-    public:
-        AntThread(Ants * ants, int ** * grids, int width, int height,
-            int delay, int numAnts, int pheromone, int nbrPheromone,
-            int evaporation, int min, int max, int cellAntMax);
+public:
+    AntThread(Ants * ants, int ** * grids, int width, int height,
+            int delay, int numAnts, int pheromoneIncrementCenter, int pheromoneIncrementNeighbouring,
+            int evaporation, int min, int premonomeMax, int cellAntMax);
 
     ~AntThread();
 
     void run();
-    void finish() {
-        running = false;
-    }
+    void finish() { running = false; }
+    void pause() { paused = !paused; }
+    bool isRunning() { return running; }
 
-    void pause() {
-        paused = !paused;
-    }
-
-    bool isRunning() {
-        return running;
-    }
-
-    private:
+private:
     bool running = true;
     bool paused = false;
     Ants * ants;
-    int ** numAntsinCells;
-    int min, max;
+    int ** gridAnts;
+    int min, premonomeMax;
     int cellAntMax;
-    int pheromone;
+    int pheromoneIncrementCenter;
     int evaporation;
-    int nbrPheromone;
+    int pheromoneIncrementNeighbouring;
     int ** * grids;
-    int width;
-    int height;
+    const int width;
+    const int height;
     int gridIdx;
     int delay;
 
-    void timeDevel();
+    void timeStep();
 
-    int newDir(int sor, int oszlop, int vsor, int voszlop);
-    void detDirs(int irany, int & ifrom, int & ito, int & jfrom, int & jto);
-    int moveAnts(int ** grid, int row, int col, int & retrow, int & retcol, int);
+    int makeDirection(int sor, int oszlop, int vsor, int voszlop);
+    void parseDiercion(int irany, int & ifrom, int & ito, int & jfrom, int & jto);
+    int calculateAntDirection(int ** grid, int row, int col, int & retrow, int & retcol, int);
     double sumNbhs(int ** grid, int row, int col, int);
-    void setPheromone(int ** grid, int row, int col);
+    void addPheromone(int ** grid, int row, int col);
 
     signals:
         void step(const int & );

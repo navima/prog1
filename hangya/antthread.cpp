@@ -1,25 +1,3 @@
-// BHAX Myrmecologist
-//
-// Copyright (C) 2019
-// Norbert Bátfai, batfai.norbert@inf.unideb.hu
-//
-//  This program is free software: you can redistribute it and/or modify
-//  it under the terms of the GNU General Public License as published by
-//  the Free Software Foundation, either version 3 of the License, or
-//  (at your option) any later version.
-//
-//  This program is distributed in the hope that it will be useful,
-//  but WITHOUT ANY WARRANTY; without even the implied warranty of
-//  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-//  GNU General Public License for more details.
-//
-//  You should have received a copy of the GNU General Public License
-//  along with this program.  If not, see <https://www.gnu.org/licenses/>.
-//
-// https://bhaxor.blog.hu/2018/09/26/hangyaszimulaciok
-// https://bhaxor.blog.hu/2018/10/10/myrmecologist
-//
-
 #include "antthread.hpp"
 #include <QDebug>
 #include <cmath>
@@ -30,28 +8,18 @@ AntThread::AntThread ( Ants* ants, int*** grids,
                      int pheromone, int nbrPheromone,
                      int evaporation,
                      int min, int max, int cellAntMax)
+                        : ants(ants), grids(grids), width(width), height(height), delay(delay),
+                          pheromoneIncrementCenter(pheromone),  evaporation(evaporation), min(min), premonomeMax(max),
+                          cellAntMax(cellAntMax), pheromoneIncrementNeighbouring(nbrPheromone)
 {
-    this->ants = ants;
-    this->grids = grids;
-    this->width = width;
-    this->height = height;
-    this->delay = delay;
-    this->pheromone = pheromone;
-    this->evaporation = evaporation;
-    this->min = min;
-    this->max = max;
-    this->cellAntMax = cellAntMax;
-    this->nbrPheromone = nbrPheromone;
 
-    numAntsinCells = new int*[height];
-    for ( int i=0; i<height; ++i ) {
-        numAntsinCells[i] = new int [width];
-    }
+    gridAnts = new int*[height];
+    for ( int i=0; i<height; ++i )
+        gridAnts[i] = new int [width];
 
     for ( int i=0; i<height; ++i )
-        for ( int j=0; j<width; ++j ) {
-            numAntsinCells[i][j] = 0;
-        }
+        for ( int j=0; j<width; ++j )
+            gridAnts[i][j] = 0;
 
     qsrand ( QDateTime::currentMSecsSinceEpoch() );
 
@@ -61,7 +29,7 @@ AntThread::AntThread ( Ants* ants, int*** grids,
         h.y = height/2 + qrand() % 40-20;
         h.x = width/2 + qrand() % 40-20;
 
-        ++numAntsinCells[h.y][h.x];
+        ++gridAnts[h.y][h.x];
 
         ants->push_back ( h );
 
@@ -70,6 +38,7 @@ AntThread::AntThread ( Ants* ants, int*** grids,
     gridIdx = 0;
 }
 
+//összead minden cellaértéket az adott "irányban"
 double AntThread::sumNbhs ( int **grid, int row, int col, int dir )
 {
     double sum = 0.0;
@@ -77,25 +46,26 @@ double AntThread::sumNbhs ( int **grid, int row, int col, int dir )
     int ifrom, ito;
     int jfrom, jto;
 
-    detDirs ( dir, ifrom, ito, jfrom, jto );
+    parseDiercion ( dir, ifrom, ito, jfrom, jto );
 
     for ( int i=ifrom; i<ito; ++i )
         for ( int j=jfrom; j<jto; ++j )
-
             if ( ! ( ( i==0 ) && ( j==0 ) ) ) {
+
+                //handle wrap-around
                 int o = col + j;
-                if ( o < 0 ) {
+                if ( o < 0 )
                     o = width-1;
-                } else if ( o >= width ) {
+                else if ( o >= width )
                     o = 0;
-                }
+
 
                 int s = row + i;
-                if ( s < 0 ) {
+                if ( s < 0 )
                     s = height-1;
-                } else if ( s >= height ) {
+                else if ( s >= height )
                     s = 0;
-                }
+
 
                 sum += (grid[s][o]+1)*(grid[s][o]+1)*(grid[s][o]+1);
 
@@ -104,7 +74,7 @@ double AntThread::sumNbhs ( int **grid, int row, int col, int dir )
     return sum;
 }
 
-int AntThread::newDir ( int sor, int oszlop, int vsor, int voszlop )
+int AntThread::makeDirection ( int sor, int oszlop, int vsor, int voszlop )
 {
 
     if ( vsor == 0 && sor == height -1 ) {
@@ -169,9 +139,8 @@ int AntThread::newDir ( int sor, int oszlop, int vsor, int voszlop )
 
 }
 
-void AntThread::detDirs ( int dir, int& ifrom, int& ito, int& jfrom, int& jto )
+void AntThread::parseDiercion ( int dir, int& ifrom, int& ito, int& jfrom, int& jto )
 {
-
     switch ( dir ) {
     case 0:
         ifrom = -1;
@@ -192,8 +161,7 @@ void AntThread::detDirs ( int dir, int& ifrom, int& ito, int& jfrom, int& jto )
         jto = 2;
         break;
     case 3:
-        ifrom =
-            0;
+        ifrom =0;
         ito = 2;
         jfrom = 0;
         jto = 2;
@@ -227,21 +195,20 @@ void AntThread::detDirs ( int dir, int& ifrom, int& ito, int& jfrom, int& jto )
 
 }
 
-int AntThread::moveAnts ( int **racs,
+int AntThread::calculateAntDirection ( int **racs,
                            int sor, int oszlop,
                            int& vsor, int& voszlop, int dir )
 {
-
     int y = sor;
     int x = oszlop;
 
     int ifrom, ito;
     int jfrom, jto;
 
-    detDirs ( dir, ifrom, ito, jfrom, jto );
+    parseDiercion ( dir, ifrom, ito, jfrom, jto );
 
     double osszes = sumNbhs ( racs, sor, oszlop, dir );
-    double random = ( double ) ( qrand() %1000000 ) / ( double ) 1000000.0;
+    double random = ( float ) ( qrand() % 1000000 ) / ( float ) 1000000.0;
     double gvalseg = 0.0;
 
 
@@ -249,19 +216,18 @@ int AntThread::moveAnts ( int **racs,
         for ( int j=jfrom; j<jto; ++j )
             if ( ! ( ( i==0 ) && ( j==0 ) ) )
             {
+                //edge wrap-around
                 int o = oszlop + j;
-                if ( o < 0 ) {
+                if ( o < 0 )
                     o = width-1;
-                } else if ( o >= width ) {
+                else if ( o >= width )
                     o = 0;
-                }
 
                 int s = sor + i;
-                if ( s < 0 ) {
+                if ( s < 0 )
                     s = height-1;
-                } else if ( s >= height ) {
+                else if ( s >= height )
                     s = 0;
-                }
 
                 //double kedvezo = std::sqrt((double)(racs[s][o]+2));//(racs[s][o]+2)*(racs[s][o]+2);
                 //double kedvezo = (racs[s][o]+b)*(racs[s][o]+b);
@@ -276,7 +242,7 @@ int AntThread::moveAnts ( int **racs,
                     vsor = s;
                     voszlop = o;
 
-                    return newDir ( sor, oszlop, vsor, voszlop );
+                    return makeDirection ( sor, oszlop, vsor, voszlop );
 
                 }
 
@@ -289,41 +255,46 @@ int AntThread::moveAnts ( int **racs,
     return dir;
 }
 
-void AntThread::timeDevel()
+void AntThread::timeStep()
 {
+    int **gridOld = grids[gridIdx];
+    int **gridNew = grids[ ( gridIdx+1 ) %2];
 
-    int **racsElotte = grids[gridIdx];
-    int **racsUtana = grids[ ( gridIdx+1 ) %2];
 
+    //calculate pheromone evaporation for each cell in gridNew
     for ( int i=0; i<height; ++i )
-        for ( int j=0; j<width; ++j )
-        {
-            racsUtana[i][j] = racsElotte[i][j];
-
-            if ( racsUtana[i][j] - evaporation >= 0 ) {
-                racsUtana[i][j] -= evaporation;
-            } else {
-                racsUtana[i][j] = 0;
-            }
-
-        }
-
-    for ( Ant &h: *ants )
     {
 
-        int sor {-1}, oszlop {-1};
-        int ujirany = moveAnts( racsElotte, h.y, h.x, sor, oszlop, h.dir );
+        for ( int j=0; j<width; ++j )
+        {
+            gridNew[i][j] = gridOld[i][j];
 
-        setPheromone ( racsUtana, h.y, h.x );
+            if ( gridNew[i][j] - evaporation >= 0 ) {
+                gridNew[i][j] -= evaporation;
+            } else {
+                gridNew[i][j] = 0;
+            }
 
-        if ( numAntsinCells[sor][oszlop] <cellAntMax ) {
+        }}
 
-            --numAntsinCells[h.y][h.x];
-            ++numAntsinCells[sor][oszlop];
+    for ( Ant& elem: *ants )
+    {
+        int ujSor;
+        int ujOszlop;
+        int ujirany = calculateAntDirection( gridOld, elem.y, elem.x, ujSor, ujOszlop, elem.dir );
 
-            h.x = oszlop;
-            h.y = sor;
-            h.dir = ujirany;
+        addPheromone ( gridNew, elem.y, elem.x );
+
+        //csak ha a célcellában még van hely
+        if ( gridAnts[ujSor][ujOszlop] < cellAntMax ) {
+
+            //hangya mozgatása
+            --gridAnts[elem.y][elem.x];
+            ++gridAnts[ujSor][ujOszlop];
+
+            elem.x = ujOszlop;
+            elem.y = ujSor;
+            elem.dir = ujirany;
 
         }
     }
@@ -331,10 +302,7 @@ void AntThread::timeDevel()
     gridIdx = ( gridIdx+1 ) %2;
 }
 
-
-
-void AntThread::setPheromone ( int **racs,
-                         int sor, int oszlop )
+void AntThread::addPheromone ( int **racs, int sor, int oszlop )
 {
 
     for ( int i=-1; i<2; ++i )
@@ -358,19 +326,19 @@ void AntThread::setPheromone ( int **racs,
                     }
                 }
 
-                if ( racs[s][o] + nbrPheromone <= max ) {
-                    racs[s][o] += nbrPheromone;
+                if ( racs[s][o] + pheromoneIncrementNeighbouring <= premonomeMax ) {
+                    racs[s][o] += pheromoneIncrementNeighbouring;
                 } else {
-                    racs[s][o] = max;
+                    racs[s][o] = premonomeMax;
                 }
 
 
             }
 
-    if ( racs[sor][oszlop] + pheromone <= max ) {
-        racs[sor][oszlop] += pheromone;
+    if ( racs[sor][oszlop] + pheromoneIncrementCenter <= premonomeMax ) {
+        racs[sor][oszlop] += pheromoneIncrementCenter;
     } else {
-        racs[sor][oszlop]  = max;
+        racs[sor][oszlop]  = premonomeMax;
     }
 
 }
@@ -382,9 +350,8 @@ void AntThread::run()
 
         QThread::msleep ( delay );
 
-        if ( !paused ) {
-            timeDevel();
-        }
+        if ( !paused )
+            timeStep();
 
         emit step ( gridIdx );
 
@@ -395,9 +362,9 @@ void AntThread::run()
 AntThread::~AntThread()
 {
     for ( int i=0; i<height; ++i ) {
-        delete [] numAntsinCells[i];
+        delete [] gridAnts[i];
     }
 
-    delete [] numAntsinCells;
+    delete [] gridAnts;
 }
 

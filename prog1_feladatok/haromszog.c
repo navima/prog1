@@ -4,7 +4,7 @@
 int haromszog()
 {
 
-	const int size = 5;
+	const size_t size = 5;
 
 	//lefoglalunk size-nyi int*-t és a visszakapott int**-t rakjuk hMatrix-ba (sorok)
 
@@ -13,9 +13,10 @@ int haromszog()
 
 	//lefoglalunk mindegyik int*-be (size+1)*int-nyi helyet (oszlopok)
 
-	int i = size;
+	size_t i = size;
 	while(i-->0)
 	{
+#pragma warning(suppress: 6011)
 		hMatrix[i] = (double*)malloc(sizeof(double)*(i + 1));
 	}
 
@@ -24,9 +25,11 @@ int haromszog()
 	i = size;
 	while (i-->0)
 	{
-		int j = (i + 1);
+		size_t j = (i + 1);
 		while (j-->0)
 		{
+#pragma warning(suppress: 6386)
+#pragma warning(suppress: 6011)
 			hMatrix[i][j] = (float)(i+1)/(float)(j+1);
 		}
 	}

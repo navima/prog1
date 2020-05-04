@@ -1,5 +1,10 @@
 #pragma warning(disable:4996)
 
+#pragma warning(disable: 6386)
+#pragma warning(disable: 6011)
+#pragma warning(disable: 6385)
+
+
 #include "stdio.h"
 #include "string.h"
 #include "ctype.h"
@@ -20,16 +25,15 @@ char* strlwr_(char *str)
 
 int xor_encrypt(char* source, size_t size, char* destination, char* key, size_t sizeKey)
 {
-	size_t actual_size = size-1;
 
-	for (size_t i = 0; i < actual_size; i++)
+	for (size_t i = 0; i < size; i++)
 	{
 		unsigned char sourceChar = (unsigned char)source[i];
 		unsigned char keyChar = (unsigned char)key[i%sizeKey];
 		destination[i] = (char)(sourceChar^keyChar);
 	}
 
-	destination[actual_size] = 0;
+	destination[size+1] = 0;
 
 	return 1;
 }
@@ -79,7 +83,7 @@ int xor_crack_1byte(char* source, size_t size, char* destination)
 
 int xor_crack_variable(char* source, size_t size, char* destination, int keyLength)
 {
-	char **asd = (char**)malloc(sizeof(char*)*keyLength);
+	char** asd = (char**)malloc(sizeof(char*)*keyLength);
 
 	for (int i = 0; i < keyLength; i++)
 	{
@@ -130,11 +134,11 @@ int xor_test()
 	memset(ciphertext, ' ', sizeof ciphertext);
 	memset(decodetext, ' ', sizeof decodetext);
 	memset(cracktext, ' ', sizeof cracktext);
-	ciphertext[680] = 0;
-	decodetext[680] = 0;
-	cracktext[680] = 0;
+	ciphertext[size] = 0;
+	decodetext[size] = 0;
+	cracktext[size] = 0;
 
-	char key[] = {1,2};
+	char key[] = {1,2,0};
 	size_t sizeKey = strlen(key);
 
 	xor_encrypt(plaintext, size, ciphertext, key, sizeKey);

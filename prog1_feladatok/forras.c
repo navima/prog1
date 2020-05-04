@@ -22,6 +22,7 @@ int forras(void)
 		printf("%d", i);
 	}
 	for (i = 0; i < 5; tomb[i] = i++) {}
+#pragma warning(suppress: 6011)
 	for (i = 0; i < n && (*d++ = *s++); ++i)
 	{
 		printf("");

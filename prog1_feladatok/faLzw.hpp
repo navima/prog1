@@ -6,46 +6,46 @@
 
 class Tree
 {
-public:
 
+protected:
 	Node<char>* tree = new Node<char>;
 
-	Tree() {};
+public:
+
+	/* Rule of three */
+	Tree(){}
 
 	~Tree() { delete tree; }
 
-	Tree(const Tree& old) : tree(new Node<char>(*old.tree))
+	Tree(const Tree& other) : tree(new Node<char>(*other.tree))
 	{
 	}
 
-	Tree& operator=(Tree& old)
+	Tree(Tree&& old) : tree(new Node<char>(std::move(*old.tree)))
 	{
-		if (&old != this)
-		{
-			Tree temp(old);
-			std::swap(*this, temp);
-		}
+	}
+
+	Tree& operator=(Tree&& old) noexcept
+	{
+		std::swap(old.tree, tree);
 		return *this;
 	}
 
-	Tree& operator=(Tree&& old)
+	Tree& operator=(const Tree& other)
 	{
-
-		if (&old != this)
-			std::swap(old.tree, tree);
+		Tree temp(other);
+		std::swap(*this, temp);
 		return *this;
 	}
 
-	Tree(Tree&& old) : tree{ new Node<char>(std::move(*old.tree)) }
-	{
-	}
 
+	/* Insertion functions ----------------------------------------------------------------*/
 
-	int insert(std::string const& toInsert, size_t index = 0, Node<char>* Node = nullptr)
+	size_t insert(std::string const& toInsert, size_t index = 0, Node<char>* Node = nullptr)
 	{
-		if (toInsert.length() > index)		//Ha bárki megmondja nekem hogy miért nem képes a c++ normálisan összehasonlítani két nem pontosan ugyanolyan típusú integert akkor boldogan halok meg
+		if (toInsert.length() > index)
 		{
-			char relevantBit = toInsert[index];    //Lemásoljuk a stringből az "első" (csak számunkra első) karaktert mert majd sokszor fogunk referálni rá
+			char relevantBit = toInsert[index];
 
 			if (relevantBit == '0')
 			{
@@ -53,10 +53,10 @@ public:
 				{
 					Node->makeLeft();
 					Node->left->data = relevantBit;
-					return Node->left->depth;							//Mivel új részfát kellett létrehozni ezért visszatérünk a Node mélységével (=mennyire volt hosszú a beillesztett karakterlánc)
+					return index + 1;
 				}
 				else
-					return insert(toInsert, index + 1, Node->left);	//index + 1  -el hívjuk meg a függvényt mivel a string vizsgált része már benne van a fában
+					return insert(toInsert, index + 1, Node->left);
 			}
 			else
 			{
@@ -64,7 +64,7 @@ public:
 				{
 					Node->makeRight();
 					Node->right->data = relevantBit;
-					return Node->right->depth;
+					return index + 1;
 				}
 				else
 					return insert(toInsert, index + 1, Node->right);
@@ -76,31 +76,25 @@ public:
 		}
 	}
 
-
-	//Egy egyszerű függvény ami egy megadott stringgel feltölti a fát az 'insert' segítségével
+	Tree& operator<<(const std::string& in) { fill(in); return *this; }
 	void fill(const std::string& toFillWith)
 	{
-		int strIndex = 0;		//Hol tartunk éppen a stringünkben
+		size_t strIndex = 0;
 
 		while (toFillWith.length() > strIndex)
 		{
-			strIndex += insert(toFillWith, strIndex, tree);		//Az insert azzal tér vissza hogy hány karaktert tudott feldolgozni
-																//Ezt a számot hozzáadjuk az indexünkhöz, mivel annyi karaktert dolgoztunk fel
+			strIndex += insert(toFillWith, strIndex, tree);
 		}
 	}
 
-
-
-	//Ez egy nemrekurzív megoldás istream-ekkel (azok annyit tudnak hogy a következő karaktert beolvassák, ilyen pl. a "cin")
-	int insert(std::istream & insertStream, Node<char>* Node = nullptr)
+	size_t insert(std::istream& insertStream, Node<char>* Node = nullptr)
 	{
-		int length = 0;
-		while (insertStream && !insertStream.eof()) //Ez addig fog futni amíg a stream 'jó'  -ÉS-  a mostani karakter nem EndOfFile
+		size_t length = 0;
+		while (insertStream && !insertStream.eof())
 		{
 			char relevantBit;
 
-			//insertStream >> relevantBit;
-			insertStream.get(relevantBit);	//itt ugyanazt csinálja a 'get' meg a '>>', de általában '>>' a formázott inputra jó, a 'get' pedig a nyers adatra
+			insertStream.get(relevantBit);
 			length++;
 
 
@@ -110,9 +104,9 @@ public:
 				{
 					Node->makeLeft();
 					Node->left->data = relevantBit;
-					return length;				//Itt megtörjük a loopot mivel egy új részfát kellett generálnunk (értsd: a feldolgozott bit-lánc még nem volt benne a fában)
+					return length;
 				}
-				else { Node = Node->left; }	//Continue loop      ==kiválasztottuk hogy melyik ágon szeretnénk továbbhaladni és az tesszük meg az új gyökérelemnek
+				else { Node = Node->left; }
 			}
 			else if(relevantBit == '1')
 			{
@@ -122,18 +116,42 @@ public:
 					Node->right->data = relevantBit;
 					return length;
 				}
-				else { Node = Node->right; }  //Cont
+				else { Node = Node->right; }
 			}
 		}
-		return length; //Ha a stream hamarabb végetér minthogy a másik kettő 'return'-höz érne, akkor is visszatérünk
+		return length;
 	}
 
-
 	void fill(std::istream& fillStream) {
-		auto done = 0;
+		size_t done = 0;
 		while (fillStream)
 		{
 			done += insert(fillStream, tree);
 		}
 	}
+
+	/* Misc functions ----------------------------------------------------------------------*/
+
+	void print() { tree->print(); }
 };
+
+void TreeTest()
+{
+	Tree tree;
+	tree << "01";
+
+	Tree tree_copy = tree;
+	tree_copy << "00";
+
+	Tree tree_move = std::move(tree);
+	tree_move << "11";
+
+	tree << "0000000000";
+
+	std::cout << "original:---------------------------------\n";
+	tree.print();
+	std::cout << "copy:-------------------------------------\n";
+	tree_copy.print();
+	std::cout << "move:-------------------------------------\n";
+	tree_move.print();
+}
