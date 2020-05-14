@@ -16,9 +16,12 @@ public:
 	T data{};
 	Node<T>* left = nullptr;
 	Node<T>* right = nullptr;
+	Node<T>* parent = nullptr;
 	
 	/* Rule of three */
 	Node() {}
+
+	Node(const T& data) : data(data) {}
 
 	~Node() 
 	{
@@ -42,23 +45,24 @@ public:
 		std::swap(right, old.right);
 	}
 
-
-	bool makeLeft()
+	virtual Node<T>* makeLeft(Node<T>& newLeft = *(new Node<T>()))
 	{
 		if (left)
-			return false;
+			return nullptr;
 		else
-			left = new Node<T>();
-			return true;
+			left = &newLeft;
+			left->parent = this;
+			return left;
 	}
 
-	bool makeRight()
+	virtual Node<T>* makeRight(Node<T>& newRight = *(new Node<T>()))
 	{
 		if (right)
-			return false;
+			return nullptr;
 		else
-			right = new Node<T>();
-			return true;
+			right = &newRight;
+			right->parent = this;
+			return right;
 	}
 
 	template <typename Pred>
@@ -91,50 +95,46 @@ public:
 		f(this);
 	}
 
-	bool insert(const T& toInsert) { return beszur(toInsert); }
-	bool beszur(const T& toInsert)
+	// Method to insert into tree
+	virtual Node<T>& insert(const T& toInsert)
 	{
 		if (data == toInsert)
 			//Item already exists
-			return false;
+			return *(new Node<T>());
 
 		if (data > toInsert)
 			if (left)
-				return left->beszur(toInsert);
+				return left->insert(toInsert);
 			else
 			{
-
-				makeLeft();
-				left->data = toInsert;
-				return true;
+				return *makeLeft(*(new Node<T>(toInsert)));
 			}
 
-
 		if (right)
-			return right->beszur(toInsert);
+			return right->insert(toInsert);
 		else
 		{
-			makeRight();
-			right->data = toInsert;
-			return true;
+			return *makeRight(*(new Node<T>(toInsert)));
 		}
 	}
 
-	size_t height() { return magassag(); }
-	size_t magassag()
+	// Method to delete from tree
+	virtual bool remove(const T& toRemove) { return false; }
+
+	size_t height()
 	{
 		size_t lefth = 0;
 		size_t righth = 0;
 		if (left)
-			lefth = left->magassag();
+			lefth = left->height();
 		if (right)
-			righth = right->magassag();
+			righth = right->height();
 		return std::max(lefth, righth) + 1;
 	}
 
 	void print(std::ostream& outStream = std::cout)
 	{
-		const size_t _height = magassag();
+		const size_t _height = height();
 
 		size_t width = (size_t) std::pow(2, _height)*2; //2^height -times- 2(number of characters) 
 

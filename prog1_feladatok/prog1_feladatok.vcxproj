@@ -167,6 +167,7 @@
     <ClInclude Include="fa.hpp" />
     <ClInclude Include="faLzw.hpp" />
     <ClInclude Include="faLzw_tag.hpp" />
+    <ClInclude Include="faRedBlack.hpp" />
     <ClInclude Include="mandelbrot.h" />
     <ClInclude Include="mandelbrot2.hpp" />
     <ClInclude Include="pch.h" />
@@ -181,7 +182,6 @@
     <ClCompile Include="haromszog.c" />
     <ClCompile Include="labda.c" />
     <ClCompile Include="lzw.c" />
-    <ClCompile Include="lzw_copy.cpp" />
     <ClCompile Include="mandelbrot.c" />
     <ClCompile Include="mandelbrot2.cpp" />
     <ClCompile Include="pageRank.c" />
