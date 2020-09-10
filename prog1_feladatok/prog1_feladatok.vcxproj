@@ -168,6 +168,7 @@
     <ClInclude Include="faLzw.hpp" />
     <ClInclude Include="faLzw_tag.hpp" />
     <ClInclude Include="faRedBlack.hpp" />
+    <ClInclude Include="gyerekszulo.hpp" />
     <ClInclude Include="mandelbrot.h" />
     <ClInclude Include="mandelbrot2.hpp" />
     <ClInclude Include="pch.h" />
