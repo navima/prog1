@@ -5,11 +5,29 @@ void valueSort(std::map<int, int>& map)
 	std::map<int, int> map2 = std::map<int, int>();
 
 	for (auto i : map)
-	{
 		map2.insert(std::pair<int, int>(i.second, i.first));
-	}
-
+	   
 	map = map2;
+}
+
+template <typename First, typename Second>
+std::vector<std::pair<First, Second>> sort_map(const std::map<First, Second>& rank)
+{
+	std::vector<std::pair<First, Second>> ordered;
+
+	for (const auto& i : rank) 
+		ordered.push_back(i);
+
+	std::sort(
+		std::begin(ordered),
+		std::end(ordered),
+		[](const auto& p1, const auto& p2) 
+		{
+			return p1.second < p2.second;
+		}
+	);
+
+	return ordered;
 }
 
 void print(std::map<int, int>& map)
@@ -33,7 +51,12 @@ void test()
 
 	print(map);
 
-	valueSort(map);
+	auto temp = sort_map(map);
 
-	print(map);
+	for (const auto& elem : temp)
+		std::cout << elem.first << "\t" << elem.second << "\n";
+	
+	std::cout << "\n";
+
+	//print(map);
 }
