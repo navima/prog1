@@ -164,6 +164,7 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClInclude Include="asd.hpp" />
+    <ClInclude Include="CAlloc.hpp" />
     <ClInclude Include="fa.hpp" />
     <ClInclude Include="faLzw.hpp" />
     <ClInclude Include="faLzw_tag.hpp" />
@@ -177,6 +178,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="asd.cpp" />
+    <ClCompile Include="CAlloc.cpp" />
     <ClCompile Include="ciklus.c" />
     <ClCompile Include="csere.c" />
     <ClCompile Include="exor.c" />

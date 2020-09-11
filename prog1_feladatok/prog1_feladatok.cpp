@@ -1,6 +1,6 @@
-#include "map-sorter.hpp"
+#include "CAlloc.hpp"
 
 int main()
 {
-	test();
+	CAlloc<int>::test();
 }

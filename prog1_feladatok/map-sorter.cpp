@@ -1,11 +1,12 @@
 #include "map-sorter.hpp"
 
-void valueSort(std::map<int, int>& map)
+template <typename T>
+void valueSort(std::map<T, T>& map)
 {
-	std::map<int, int> map2 = std::map<int, int>();
+	std::map<T, T> map2 = std::map<T, T>();
 
 	for (auto i : map)
-		map2.insert(std::pair<int, int>(i.second, i.first));
+		map2.insert(std::pair<T, T>(i.second, i.first));
 	   
 	map = map2;
 }
@@ -30,7 +31,8 @@ std::vector<std::pair<First, Second>> sort_map(const std::map<First, Second>& ra
 	return ordered;
 }
 
-void print(std::map<int, int>& map)
+template <typename First, typename Second>
+void print(std::map<First, Second>& map)
 {
 	for (auto elem : map)
 		std::cout << elem.first << "\t" << elem.second <<"\n";

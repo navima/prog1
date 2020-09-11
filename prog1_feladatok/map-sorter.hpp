@@ -6,10 +6,13 @@
 #include <algorithm>
 
 
-void valueSort(std::map<int, int>& map);
+template <typename T>
+void valueSort(std::map<T, T>& map);
 
-void print(std::map<int, int>& map);
+template <typename First, typename Second>
+std::vector<std::pair<First, Second>> sort_map(const std::map<First, Second>& rank);
 
-std::vector<std::pair<std::string, int>> sort_map(std::map <std::string, int> &rank);
+template <typename First, typename Second>
+void print(std::map<First, Second>& map);
 
 void test();
