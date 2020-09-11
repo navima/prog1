@@ -171,6 +171,7 @@
     <ClInclude Include="gyerekszulo.hpp" />
     <ClInclude Include="mandelbrot.h" />
     <ClInclude Include="mandelbrot2.hpp" />
+    <ClInclude Include="map-sorter.hpp" />
     <ClInclude Include="pch.h" />
     <ClInclude Include="polar.hpp" />
   </ItemGroup>
@@ -185,6 +186,7 @@
     <ClCompile Include="lzw.c" />
     <ClCompile Include="mandelbrot.c" />
     <ClCompile Include="mandelbrot2.cpp" />
+    <ClCompile Include="map-sorter.cpp" />
     <ClCompile Include="pageRank.c" />
     <ClCompile Include="pch.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Create</PrecompiledHeader>
