@@ -1,6 +1,6 @@
-#include "CAlloc.hpp"
+#include "javaList.hpp"
 
 int main()
 {
-	CAlloc<int>::test();
+	test("F:\\asd");
 }

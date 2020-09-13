@@ -51,6 +51,12 @@
     <ClInclude Include="CAlloc.hpp">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="copy_move.hpp">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="javaList.hpp">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="pch.cpp">
